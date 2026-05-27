@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>YaPedís × MongoDB — Pitch Interactivo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>MongoDB Atlas × ActionWave</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,17 +31,16 @@
 </script>
 <style>
   html, body, #root { height: 100%; margin: 0; }
-  body { font-family: 'Inter', system-ui, sans-serif; background: #001E2B; color: white; overflow: hidden; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #001E2B; color: white; overflow: hidden; -webkit-tap-highlight-color: transparent; }
   * { box-sizing: border-box; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-  .code-block { background: #00141C; border: 1px solid #023430; border-radius: 8px; padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+  .code-block { background: #00141C; border: 1px solid #023430; border-radius: 8px; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+  @media (min-width: 1024px) { .code-block { padding: 16px; font-size: 13px; line-height: 1.6; } }
   .gradient-text { background: linear-gradient(135deg, #00ED64 0%, #C3F4D7 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .glow-green { box-shadow: 0 0 40px rgba(0, 237, 100, 0.15); }
   @keyframes pulse-dot { 0%,100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
   .pulse-dot { animation: pulse-dot 1.5s ease-in-out infinite; }
-  @keyframes shard-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.06); } 100% { transform: scale(1); } }
-  .shard-active { animation: shard-pulse 0.4s ease-out; }
   @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .fade-up { animation: fade-up 0.5s ease-out backwards; }
   @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
@@ -59,305 +58,351 @@ import React, { useState, useEffect, useMemo, useCallback } from 'https://esm.sh
 import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
 import htm from 'https://esm.sh/htm@3.1.1';
 const html = htm.bind(React.createElement);
-const e = React.createElement;
 
 // =================== PORTADA ===================
 function Portada({ goTo }) {
-  const url = typeof window !== 'undefined' ? window.location.href : 'https://yapedis.vercel.app';
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(url)}`;
+  const url = typeof window !== 'undefined' ? window.location.href : '';
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}`;
   return html`
-    <div class="min-h-full flex items-center justify-center p-12 relative">
-      <div class="absolute top-20 left-20 w-96 h-96 rounded-full bg-mongo-green/10 blur-[120px]"></div>
-      <div class="absolute bottom-20 right-20 w-96 h-96 rounded-full bg-mongo-forest/20 blur-[120px]"></div>
-      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl w-full">
+    <div class="min-h-full flex items-center justify-center p-5 sm:p-10 relative">
+      <div class="absolute top-10 left-10 w-72 h-72 rounded-full bg-mongo-green/10 blur-[100px] pointer-events-none"></div>
+      <div class="absolute bottom-10 right-10 w-72 h-72 rounded-full bg-mongo-forest/20 blur-[100px] pointer-events-none"></div>
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-6xl w-full">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-mongo-green/10 border border-mongo-green/30 text-mongo-green text-xs font-medium mb-6 fade-up" style=${{animationDelay:'0.1s'}}>
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-mongo-green/10 border border-mongo-green/30 text-mongo-green text-[10px] sm:text-xs font-medium mb-4 fade-up" style=${{animationDelay:'0.1s'}}>
             <span class="w-2 h-2 bg-mongo-green rounded-full pulse-dot"></span>
-            Gestión y Arquitectura de Datos · Presentación interactiva
+            ActionWave · Componente A — Perfiles
           </div>
-          <h1 class="text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6 fade-up" style=${{animationDelay:'0.2s'}}>
-            Tus datos no son <span class="gradient-text">tablas.</span>
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] mb-4 fade-up" style=${{animationDelay:'0.2s'}}>
+            Catalina, <span class="gradient-text">documental</span> está claro.
             <br/>
-            <span class="text-white/60">¿Por qué seguís forzándolos a serlo?</span>
+            <span class="text-white/60">La pregunta es <em>cuál</em>.</span>
           </h1>
-          <p class="text-xl text-white/70 mb-8 max-w-xl fade-up" style=${{animationDelay:'0.4s'}}>
-            Vamos a construir <strong class="text-mongo-green">YaPedís</strong> (un clon de PedidosYa). Te vamos a mostrar por qué SQL te frena y por qué MongoDB te libera.
+          <p class="text-sm sm:text-lg text-white/70 mb-6 max-w-xl fade-up" style=${{animationDelay:'0.4s'}}>
+            Somos <strong class="text-mongo-green">MongoDB Atlas</strong>. En 12 minutos te mostramos por qué somos la única opción documental que escala a 15M+ usuarios sin que tu equipo sangre operacionalmente.
           </p>
-          <div class="flex gap-4 items-center fade-up" style=${{animationDelay:'0.6s'}}>
-            <button onClick=${() => goTo(1)} class="px-6 py-3 bg-mongo-green text-mongo-dark font-bold rounded-lg hover:bg-mongo-mint transition-all hover:scale-105 glow-green">
+          <div class="flex flex-wrap gap-3 items-center fade-up" style=${{animationDelay:'0.6s'}}>
+            <button onClick=${() => goTo(1)} class="px-5 py-2.5 bg-mongo-green text-mongo-dark font-bold rounded-lg hover:bg-mongo-mint transition-all hover:scale-105 glow-green text-sm">
               Empezar pitch →
             </button>
-            <span class="text-white/40 text-sm">5 bloques · 15-20 min · Pitch interactivo</span>
+            <span class="text-white/40 text-xs">5 bloques · 12 min</span>
           </div>
         </div>
-        <div class="flex flex-col items-center gap-4 fade-up" style=${{animationDelay:'0.7s'}}>
-          <div class="bg-white p-6 rounded-2xl glow-green">
-            <img src=${qrUrl} width="220" height="220" alt="QR" />
+        <div class="hidden lg:flex flex-col items-center gap-4 fade-up" style=${{animationDelay:'0.7s'}}>
+          <div class="bg-white p-5 rounded-2xl glow-green">
+            <img src=${qrUrl} width="180" height="180" alt="QR" />
           </div>
-          <div class="text-center">
-            <p class="text-mongo-green font-bold text-lg mb-1">Escaneá y seguinos en vivo</p>
-            <p class="text-white/50 text-sm break-all max-w-xs">${url.replace('https://','').replace('http://','')}</p>
-          </div>
+          <p class="text-mongo-green font-bold text-sm">Comité: escaneá desde tu celular</p>
         </div>
       </div>
     </div>
   `;
 }
 
-// =================== BLOQUE 1 ===================
-const camposBase = ['nombre', 'precio', 'descripción'];
-const camposExtra = [
-  { id: 'tamaño', label: 'tamaño (chico/grande)' },
-  { id: 'sin_tacc', label: 'sin TACC' },
-  { id: 'picante', label: 'nivel de picante' },
-  { id: 'adicionales', label: 'lista de adicionales' },
-  { id: 'imagen', label: 'imagen del plato' },
+// =================== BLOQUE 1: Comparativa documental ===================
+const competidores = [
+  { nombre: 'MongoDB Atlas', nosotros: true, badges: { schema: 'native', sharding: 'native', aggregation: 'native', geo: 'native', search: 'native', multiregion: 'native', pricing: 'pay-as-you-go', lockin: 'low' } },
+  { nombre: 'Firestore', nosotros: false, badges: { schema: 'limited', sharding: 'auto', aggregation: 'limited', geo: 'manual', search: 'addon', multiregion: 'limited', pricing: 'per-read', lockin: 'high-gcp' } },
+  { nombre: 'DocumentDB', nosotros: false, badges: { schema: 'mongo-api', sharding: 'no', aggregation: 'partial', geo: 'limited', search: 'no', multiregion: 'manual', pricing: 'per-instance', lockin: 'high-aws' } },
+  { nombre: 'Couchbase', nosotros: false, badges: { schema: 'native', sharding: 'native', aggregation: 'sql++', geo: 'native', search: 'native', multiregion: 'enterprise', pricing: 'per-node', lockin: 'medium' } }
 ];
 
-function Bloque1() {
-  const [extra, setExtra] = useState(0);
-  const total = camposBase.length + extra;
-  const tablas = 4 + extra * 2;
-  const joins = 3 + extra * 2;
+const filasComparacion = [
+  { key: 'schema', label: 'Schema flexible' },
+  { key: 'sharding', label: 'Sharding nativo' },
+  { key: 'aggregation', label: 'Aggregation pipeline' },
+  { key: 'geo', label: 'Geo queries' },
+  { key: 'search', label: 'Full-text search' },
+  { key: 'multiregion', label: 'Multi-region A/A' },
+  { key: 'pricing', label: 'Pricing' },
+  { key: 'lockin', label: 'Lock-in' }
+];
 
-  const sqlCode = `-- Hay que crear tabla nueva por cada atributo
-CREATE TABLE menu_item (id, restaurante_id, nombre, precio);
-CREATE TABLE menu_descripcion (item_id, descripcion);${extra>=1?'\nCREATE TABLE menu_tamanos (item_id, tamano);\nCREATE TABLE menu_precios_tamano (item_id, tamano_id, precio);':''}${extra>=2?'\nCREATE TABLE menu_tacc (item_id, sin_tacc);\nCREATE TABLE menu_tacc_audit (...);':''}${extra>=3?'\nCREATE TABLE menu_picante (item_id, nivel);\nCREATE TABLE menu_picante_alergias (...);':''}${extra>=4?'\nCREATE TABLE menu_adicionales (...);\nCREATE TABLE adicional_item (...);':''}${extra>=5?'\nCREATE TABLE menu_imagen (item_id, url);\nCREATE TABLE imagen_metadata (...);':''}
+const badgeMap = {
+  'native': { color: 'bg-mongo-green/20 text-mongo-green', label: '✓ Nativo' },
+  'auto': { color: 'bg-mongo-green/20 text-mongo-green', label: '✓ Auto' },
+  'sql++': { color: 'bg-mongo-green/20 text-mongo-green', label: '✓ SQL++' },
+  'mongo-api': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ API parcial' },
+  'limited': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Limitado' },
+  'manual': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Manual' },
+  'partial': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Parcial' },
+  'addon': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Add-on' },
+  'enterprise': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Enterprise' },
+  'no': { color: 'bg-red-500/20 text-red-400', label: '✗ No' },
+  'pay-as-you-go': { color: 'bg-mongo-green/20 text-mongo-green', label: '✓ Pay-as-go' },
+  'per-read': { color: 'bg-red-500/20 text-red-400', label: '⚠ Por lectura' },
+  'per-instance': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Por instancia' },
+  'per-node': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Por nodo' },
+  'low': { color: 'bg-mongo-green/20 text-mongo-green', label: '✓ Bajo' },
+  'medium': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Medio' },
+  'high-aws': { color: 'bg-red-500/20 text-red-400', label: '⚠ AWS' },
+  'high-gcp': { color: 'bg-red-500/20 text-red-400', label: '⚠ GCP' }
+};
 
--- Para leer UN item necesitás:
-SELECT * FROM menu_item m
-  JOIN menu_descripcion d ON d.item_id = m.id${extra>=1?'\n  JOIN menu_tamanos t ON t.item_id = m.id\n  JOIN menu_precios_tamano pt ON ...':''}${extra>=2?'\n  JOIN menu_tacc tc ON ...':''}${extra>=3?'\n  JOIN menu_picante p ON ...':''}
-  WHERE m.id = 1;`;
-
-  const mongoCode = `{
-  "_id": "milanesa_napo",
-  "nombre": "Milanesa Napolitana",
-  "precio": 4500,
-  "descripcion": "Con jamón, queso y salsa"${extra>=1?',\n  "tamaños": [\n    { "nombre": "chica", "precio": 3500 },\n    { "nombre": "grande", "precio": 4500 }\n  ]':''}${extra>=2?',\n  "sinTacc": false':''}${extra>=3?',\n  "picante": "medio"':''}${extra>=4?',\n  "adicionales": [\n    { "nombre": "huevo", "precio": 500 },\n    { "nombre": "papas", "precio": 800 }\n  ]':''}${extra>=5?',\n  "imagen": "https://..."':''}
+function badgeRender(value) {
+  const cfg = badgeMap[value] || { color: 'bg-white/10', label: value };
+  return html`<span class=${`inline-block px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium ${cfg.color}`}>${cfg.label}</span>`;
 }
 
-// Para leer el item:
-db.menu.findOne({ _id: "milanesa_napo" })
-// Listo. Todo en un solo documento.`;
-
+function Bloque1() {
   return html`
-    <div class="min-h-full p-10 lg:p-16">
+    <div class="min-h-full p-5 sm:p-10 lg:p-16">
       <div class="max-w-7xl mx-auto">
-        <div class="mb-2 text-mongo-green text-sm font-semibold tracking-wider uppercase">Bloque 1 · El Problema</div>
-        <h2 class="text-5xl font-extrabold mb-4">Construyamos <span class="gradient-text">YaPedís</span> en SQL.</h2>
-        <p class="text-xl text-white/70 mb-10 max-w-3xl">
-          Spoiler: cada vez que agregás algo al menú, tu modelo relacional <strong class="text-red-400">se complica más</strong>.
+        <div class="mb-2 text-mongo-green text-xs sm:text-sm font-semibold tracking-wider uppercase">Bloque 1 · El campo de batalla</div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3">SQL quedó atrás. <span class="gradient-text">¿Y ahora?</span></h2>
+        <p class="text-sm sm:text-lg text-white/70 mb-6 max-w-3xl">
+          Hay 4 opciones documentales serias. <strong class="text-mongo-green">Solo una</strong> cumple las 8 capacidades que ActionWave necesita.
         </p>
 
-        <div class="mb-10 p-6 bg-white/5 border border-white/10 rounded-xl">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <div class="text-xs uppercase tracking-wider text-white/40 mb-1">Probá vos mismo</div>
-              <div class="font-bold text-lg">Agregá campos al menú de YaPedís</div>
+        <!-- Tabla en desktop -->
+        <div class="hidden md:block bg-white/5 border border-white/10 rounded-xl overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-white/10">
+                <th class="text-left px-3 py-3 text-white/50 font-medium uppercase text-xs tracking-wider">Capacidad</th>
+                ${competidores.map(c => html`
+                  <th key=${c.nombre} class=${`text-left px-3 py-3 ${c.nosotros ? 'bg-mongo-green/10' : ''}`}>
+                    <div class=${`font-bold text-sm ${c.nosotros ? 'text-mongo-green' : 'text-white'}`}>${c.nombre}</div>
+                    ${c.nosotros && html`<div class="text-[9px] text-mongo-green/70 mt-0.5">★ nuestra propuesta</div>`}
+                  </th>
+                `)}
+              </tr>
+            </thead>
+            <tbody>
+              ${filasComparacion.map((fila, idx) => html`
+                <tr key=${fila.key} class=${`border-b border-white/5 ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''}`}>
+                  <td class="px-3 py-2.5 text-white/80 font-medium text-xs">${fila.label}</td>
+                  ${competidores.map(c => html`
+                    <td key=${c.nombre} class=${`px-3 py-2.5 ${c.nosotros ? 'bg-mongo-green/5' : ''}`}>
+                      ${badgeRender(c.badges[fila.key])}
+                    </td>
+                  `)}
+                </tr>
+              `)}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Cards en mobile -->
+        <div class="md:hidden space-y-3">
+          ${competidores.map(c => html`
+            <div key=${c.nombre} class=${`p-4 rounded-xl border-2 ${c.nosotros ? 'bg-mongo-green/10 border-mongo-green/40' : 'bg-white/5 border-white/10'}`}>
+              <div class=${`font-bold text-base mb-3 flex items-center justify-between ${c.nosotros ? 'text-mongo-green' : 'text-white'}`}>
+                <span>${c.nombre}</span>
+                ${c.nosotros && html`<span class="text-[10px] bg-mongo-green text-mongo-dark px-2 py-0.5 rounded-full font-bold">★ NOSOTROS</span>`}
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                ${filasComparacion.map(fila => html`
+                  <div key=${fila.key} class="text-xs">
+                    <div class="text-white/40 text-[10px] uppercase mb-0.5">${fila.label}</div>
+                    ${badgeRender(c.badges[fila.key])}
+                  </div>
+                `)}
+              </div>
             </div>
-            <div class="text-3xl font-extrabold text-mongo-green tabular-nums">
-              ${total} <span class="text-sm text-white/40 font-normal">campos</span>
-            </div>
+          `)}
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+          <div class="p-3 bg-red-500/10 border border-red-500/30 rounded-xl">
+            <div class="font-bold text-red-400 mb-1 text-sm">⚠ Firestore</div>
+            <div class="text-white/60 text-xs">Pricing por lectura escala mal a 15M usuarios. Lock-in con GCP.</div>
           </div>
-          <input type="range" min="0" max=${camposExtra.length} value=${extra} onChange=${(ev)=>setExtra(parseInt(ev.target.value))} class="w-full mongo-range cursor-pointer" />
-          <div class="flex flex-wrap gap-2 mt-4">
-            ${camposBase.map(c => html`<span key=${c} class="px-2 py-1 rounded bg-white/10 text-xs">${c}</span>`)}
-            ${camposExtra.slice(0, extra).map(c => html`
-              <span key=${c.id} class="px-2 py-1 rounded bg-mongo-green/20 border border-mongo-green/40 text-mongo-green text-xs fade-in">+ ${c.label}</span>
-            `)}
+          <div class="p-3 bg-red-500/10 border border-red-500/30 rounded-xl">
+            <div class="font-bold text-red-400 mb-1 text-sm">⚠ DocumentDB</div>
+            <div class="text-white/60 text-xs">Emula la API de Mongo parcialmente. Sin sharding ni Atlas Search. Ata a AWS.</div>
+          </div>
+          <div class="p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
+            <div class="font-bold text-yellow-400 mb-1 text-sm">△ Couchbase</div>
+            <div class="text-white/60 text-xs">Sólido, pero multi-region requiere Enterprise. Comunidad 10x más chica.</div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-white/5 border-2 rounded-xl p-6 flex flex-col transition-colors" style=${{borderColor: extra > 2 ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.1)'}}>
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-xl font-bold flex items-center gap-2">
-                <span class="text-red-400">⚠</span> SQL Relacional
-              </h3>
-              <div class="text-right">
-                <div class="text-2xl font-extrabold text-red-400 tabular-nums">${tablas} tablas</div>
-                <div class="text-xs text-white/40">${joins} JOINs por query</div>
-              </div>
-            </div>
-            <div class="code-block flex-1 text-xs">${sqlCode}</div>
-            ${extra >= 3 && html`<div class="mt-3 text-red-400 text-sm font-semibold fade-in">😰 Migración + queries lentas + dolor de cabeza</div>`}
-          </div>
-
-          <div class="bg-mongo-green/5 border-2 border-mongo-green/30 rounded-xl p-6 flex flex-col">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-xl font-bold flex items-center gap-2">
-                <span class="text-mongo-green">✓</span> MongoDB (Documento)
-              </h3>
-              <div class="text-right">
-                <div class="text-2xl font-extrabold text-mongo-green tabular-nums">1 colección</div>
-                <div class="text-xs text-white/40">0 JOINs</div>
-              </div>
-            </div>
-            <div class="code-block flex-1 text-xs">${mongoCode}</div>
-            <div class="mt-3 text-mongo-green text-sm font-semibold">🚀 Cero migraciones. Una sola query. Schema flexible.</div>
-          </div>
-        </div>
-
-        <div class="mt-8 text-center text-white/60 text-sm italic">
-          💡 ¿Y si te dijéramos que esto no es teoría — <strong class="text-white">Rappi maneja millones de pedidos así</strong>?
+        <div class="mt-4 text-center text-white/60 text-xs sm:text-sm italic">
+          💡 <strong class="text-white">DB-Engines ranking</strong>: MongoDB #1 NoSQL hace 8 años consecutivos.
         </div>
       </div>
     </div>
   `;
 }
 
-// =================== BLOQUE 2 ===================
-const restauranteInicial = {
-  nombre: "La Esquina de Don José",
-  cocina: ["argentina", "parrilla"],
-  rating: 4.7,
-  abierto: true,
-  direccion: {
-    calle: "Av. Corrientes 1234",
-    ciudad: "CABA",
-    coords: [-58.388, -34.605]
-  },
-  menu: [
-    { nombre: "Bife de Chorizo", precio: 6500, popular: true },
-    { nombre: "Empanadas", precio: 800, cantidad: 12 }
-  ],
-  delivery: ["YaPedís", "Rappi"]
+// =================== BLOQUE 2: Modelo de perfil ActionWave ===================
+const perfilInicial = {
+  _id: "user_482931",
+  demografia: { edad: 28, ciudad: "Buenos Aires", pais: "AR", coords: [-58.388, -34.605] },
+  comportamiento: { sesiones_30d: 47, categorias_top: ["moda", "tech", "viajes"] },
+  segmentos: ["alto_engagement", "shopper_premium"],
+  ml_features: { predicted_ltv: 1450.5, churn_risk: 0.12, afinidad: { nike: 0.87, apple: 0.65 } },
+  preferencias: { canal: "push", horario: "20:00-22:00" },
+  campanas_recientes: [
+    { id: "cmp_nike_q2", click: true, conversion: true }
+  ]
 };
 
 function Bloque2() {
-  const [json, setJson] = useState(JSON.stringify(restauranteInicial, null, 2));
+  const [json, setJson] = useState(JSON.stringify(perfilInicial, null, 2));
   const parsed = useMemo(() => {
     try { return { ok: true, doc: JSON.parse(json) }; }
     catch (err) { return { ok: false, err: err.message }; }
   }, [json]);
 
-  const conceptos = [
-    { titulo: 'Documento', desc: 'JSON enriquecido (BSON). Acepta arrays, objetos anidados, geo, fechas.', icon: '📄' },
-    { titulo: 'Colección', desc: 'Grupo de documentos. Como una "tabla", pero cada documento puede ser distinto.', icon: '📚' },
-    { titulo: 'Database', desc: 'Conjunto de colecciones. Un Atlas cluster puede tener muchas DBs.', icon: '🗄️' },
-  ];
-
   return html`
-    <div class="min-h-full p-10 lg:p-16">
+    <div class="min-h-full p-5 sm:p-10 lg:p-16">
       <div class="max-w-7xl mx-auto">
-        <div class="mb-2 text-mongo-green text-sm font-semibold tracking-wider uppercase">Bloque 2 · ¿Qué es MongoDB?</div>
-        <h2 class="text-5xl font-extrabold mb-4">Pensá en <span class="gradient-text">documentos</span>, no en tablas.</h2>
-        <p class="text-xl text-white/70 mb-10 max-w-3xl">
-          Un documento MongoDB es un objeto JSON. Una colección es un conjunto de documentos. Sin esquema rígido, sin JOINs forzados.
+        <div class="mb-2 text-mongo-green text-xs sm:text-sm font-semibold tracking-wider uppercase">Bloque 2 · El modelo</div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3">Un usuario ActionWave es <span class="gradient-text">un documento</span>.</h2>
+        <p class="text-sm sm:text-lg text-white/70 mb-6 max-w-3xl">
+          Demografía + comportamiento + ML features + segmentos + campañas. Todo en un solo documento, sin JOINs.
         </p>
 
-        <div class="grid grid-cols-3 gap-4 mb-10">
-          ${conceptos.map((c,i) => html`
-            <div key=${c.titulo} class="p-5 bg-white/5 border border-white/10 rounded-xl hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay: `${i*0.1}s`}}>
-              <div class="text-3xl mb-2">${c.icon}</div>
-              <div class="font-bold text-lg mb-1 text-mongo-green">${c.titulo}</div>
-              <div class="text-sm text-white/60">${c.desc}</div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+          ${[
+            { titulo: 'Schema flexible', desc: 'ML agrega 10 features nuevas. Sin ALTER TABLE. Sin downtime.', icon: '🧬' },
+            { titulo: 'Anidamiento profundo', desc: 'Tu perfil es UNA entidad, no 8 tablas con foreign keys.', icon: '📐' },
+            { titulo: 'Validación opcional', desc: 'Schema-on-read o schema-on-write — vos elegís.', icon: '🛡️' }
+          ].map((c,i) => html`
+            <div key=${c.titulo} class="p-3 sm:p-4 bg-white/5 border border-white/10 rounded-xl hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.1}s`}}>
+              <div class="text-2xl mb-1">${c.icon}</div>
+              <div class="font-bold text-sm mb-1 text-mongo-green">${c.titulo}</div>
+              <div class="text-xs text-white/60">${c.desc}</div>
             </div>
           `)}
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
-            <div class="flex items-center justify-between mb-3">
-              <h3 class="font-bold text-lg">📝 Editá el documento en vivo</h3>
-              <div class=${`px-2 py-1 rounded text-xs font-bold ${parsed.ok ? 'bg-mongo-green/20 text-mongo-green' : 'bg-red-500/20 text-red-400'}`}>
-                ${parsed.ok ? '✓ JSON válido' : '✗ JSON inválido'}
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-sm sm:text-base">📝 Editá el perfil</h3>
+              <div class=${`px-2 py-1 rounded text-[10px] font-bold ${parsed.ok ? 'bg-mongo-green/20 text-mongo-green' : 'bg-red-500/20 text-red-400'}`}>
+                ${parsed.ok ? '✓ JSON válido' : '✗ inválido'}
               </div>
             </div>
             <textarea
               value=${json}
               onChange=${(ev)=>setJson(ev.target.value)}
-              class="w-full h-[400px] code-block resize-none focus:outline-none focus:border-mongo-green/60"
+              class="w-full h-[260px] sm:h-[340px] code-block resize-none focus:outline-none focus:border-mongo-green/60"
               spellCheck=${false}
             ></textarea>
-            ${!parsed.ok && html`<div class="mt-2 text-red-400 text-xs font-mono">${parsed.err}</div>`}
+            ${!parsed.ok && html`<div class="mt-2 text-red-400 text-[10px] font-mono">${parsed.err}</div>`}
           </div>
 
           <div>
-            <h3 class="font-bold text-lg mb-3">👀 Así lo guarda MongoDB</h3>
-            <div class="bg-mongo-green/5 border border-mongo-green/30 rounded-xl p-5 h-[400px] overflow-y-auto">
-              ${parsed.ok && parsed.doc ? renderDoc(parsed.doc) : html`<div class="text-white/40 italic">Arreglá el JSON para ver la vista previa...</div>`}
+            <h3 class="font-bold text-sm sm:text-base mb-2">👀 Así lo guarda MongoDB</h3>
+            <div class="bg-mongo-green/5 border border-mongo-green/30 rounded-xl p-3 sm:p-4 h-[260px] sm:h-[340px] overflow-y-auto">
+              ${parsed.ok && parsed.doc ? renderProfile(parsed.doc) : html`<div class="text-white/40 italic text-sm">Arreglá el JSON...</div>`}
             </div>
           </div>
         </div>
 
-        <div class="mt-6 p-4 bg-mongo-green/10 border border-mongo-green/30 rounded-xl text-sm">
-          <strong class="text-mongo-green">💡 Lo más importante:</strong> agregá un campo nuevo al JSON (probá <code class="bg-mongo-dark px-1.5 py-0.5 rounded">"telefono": "11-1234"</code>) y miralo aparecer. <strong>No hubo ALTER TABLE. No hubo migración.</strong> Eso es schema flexible.
+        <div class="mt-4 p-3 bg-mongo-green/10 border border-mongo-green/30 rounded-xl text-xs sm:text-sm">
+          <strong class="text-mongo-green">💡 Probá:</strong> agregá <code class="bg-mongo-dark px-1 py-0.5 rounded text-[11px]">"nuevo_score": 0.95</code> dentro de <code class="bg-mongo-dark px-1 py-0.5 rounded text-[11px]">ml_features</code>. Aparece al instante. <strong>Sin migración.</strong>
         </div>
       </div>
     </div>
   `;
 }
 
-function renderDoc(doc) {
+function renderProfile(doc) {
+  const renderValue = (v) => {
+    if (v === null) return html`<span class="text-white/40 italic">null</span>`;
+    if (typeof v === 'boolean') return v ? '✓ true' : '✗ false';
+    if (typeof v === 'number') return html`<span class="text-mongo-green">${v}</span>`;
+    if (Array.isArray(v)) return html`<div class="flex flex-wrap gap-1">${v.map((x,i) => html`<span key=${i} class="px-1.5 py-0.5 bg-white/10 rounded text-[10px]">${typeof x === 'object' ? JSON.stringify(x) : String(x)}</span>`)}</div>`;
+    if (typeof v === 'object') return html`<div class="ml-2 pl-2 border-l-2 border-mongo-green/30 space-y-1 mt-1">${Object.entries(v).map(([k,vv]) => html`<div key=${k}><span class="text-white/40 text-[9px] uppercase">${k}:</span> <span class="text-xs">${renderValue(vv)}</span></div>`)}</div>`;
+    return String(v);
+  };
   return html`
-    <div class="space-y-3 text-sm">
-      ${doc.nombre !== undefined && html`<${Field} label="Nombre" value=${doc.nombre} mono=${true} />`}
-      ${Array.isArray(doc.cocina) && html`
-        <div>
-          <div class="text-xs text-white/40 uppercase tracking-wider mb-1">Cocinas (array)</div>
-          <div class="flex flex-wrap gap-1">
-            ${doc.cocina.map(c => html`<span key=${c} class="px-2 py-0.5 bg-white/10 rounded text-xs">${String(c)}</span>`)}
-          </div>
+    <div class="space-y-2 text-xs">
+      ${Object.entries(doc).map(([k,v]) => html`
+        <div key=${k}>
+          <div class="text-[10px] text-mongo-green uppercase tracking-wider mb-0.5 font-semibold">${k}</div>
+          <div class="ml-1">${renderValue(v)}</div>
         </div>
-      `}
-      ${doc.rating !== undefined && html`<${Field} label="Rating" value=${`⭐ ${doc.rating}`} />`}
-      ${doc.abierto !== undefined && html`<${Field} label="Estado" value=${doc.abierto ? '🟢 Abierto' : '🔴 Cerrado'} />`}
-      ${doc.direccion && typeof doc.direccion === 'object' && html`
-        <div>
-          <div class="text-xs text-white/40 uppercase tracking-wider mb-1">Dirección (objeto anidado)</div>
-          <div class="ml-4 pl-3 border-l-2 border-mongo-green/30 space-y-1">
-            ${Object.entries(doc.direccion).map(([k,v]) => html`
-              <${Field} key=${k} label=${k} value=${Array.isArray(v) ? v.join(', ') : String(v)} small=${true} />
-            `)}
-          </div>
-        </div>
-      `}
-      ${Array.isArray(doc.menu) && html`
-        <div>
-          <div class="text-xs text-white/40 uppercase tracking-wider mb-1">Menú (${doc.menu.length} items anidados)</div>
-          <div class="ml-4 pl-3 border-l-2 border-mongo-green/30 space-y-2">
-            ${doc.menu.map((item,i) => html`
-              <div key=${i} class="p-2 bg-white/5 rounded">
-                <div class="font-mono text-xs">${item.nombre ?? JSON.stringify(item)}</div>
-                ${item.precio !== undefined && html`<div class="text-xs text-mongo-green">$${item.precio}</div>`}
-              </div>
-            `)}
-          </div>
-        </div>
-      `}
-      ${Object.entries(doc).filter(([k]) => !['nombre','cocina','rating','abierto','direccion','menu'].includes(k)).map(([k,v]) => html`
-        <${Field} key=${k} label=${k} value=${typeof v === 'object' ? JSON.stringify(v) : String(v)} />
       `)}
     </div>
   `;
 }
 
-function Field({ label, value, mono, small }) {
+// =================== BLOQUE 3: Propuesta de Valor ===================
+const valuePillars = [
+  { titulo: 'Hub central de perfiles', desc: 'Los otros 3 paradigmas (grafos, columnas, clave-valor) leen perfiles desde Mongo via Change Streams. Una sola fuente de verdad.', icon: '🎯' },
+  { titulo: 'Stack-agnostic', desc: 'Tu Python, Spark, Kafka y herramientas de ML actuales funcionan con drivers oficiales. Sin reescribir nada.', icon: '🔗' },
+  { titulo: 'Plataforma única', desc: 'Search, Vector Search, Charts, Triggers, Functions, Realm — todo en Atlas. Menos vendors que integrar.', icon: '🧩' },
+  { titulo: 'Multi-cloud real', desc: 'Corre en AWS, GCP, Azure. Si ActionWave cambia de cloud, MongoDB se mueve con vos.', icon: '☁️' },
+  { titulo: 'Time-to-market', desc: 'Schema flexible = ML team itera sin esperar DBAs. Producto sale más rápido.', icon: '⚡' },
+  { titulo: 'Talento + comunidad', desc: '80K+ devs LATAM en LinkedIn con MongoDB. Docs masivas, Stack Overflow #1.', icon: '🌎' }
+];
+
+function Bloque3() {
   return html`
-    <div>
-      <div class=${`text-white/40 uppercase tracking-wider ${small ? 'text-[10px]' : 'text-xs'}`}>${label}</div>
-      <div class=${`${mono ? 'font-mono' : ''} ${small ? 'text-xs' : 'text-sm'}`}>${String(value)}</div>
+    <div class="min-h-full p-5 sm:p-10 lg:p-16">
+      <div class="max-w-7xl mx-auto">
+        <div class="mb-2 text-mongo-green text-xs sm:text-sm font-semibold tracking-wider uppercase">Bloque 3 · Propuesta de Valor</div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3">Atlas potencia <span class="gradient-text">todo</span> el ecosistema.</h2>
+        <p class="text-sm sm:text-lg text-white/70 mb-6 max-w-3xl">
+          Catalina, esta es la pregunta clave: <em>"¿qué ventajas aporta nuestro enfoque al ecosistema completo de ActionWave?"</em> — Acá van 6 respuestas concretas.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+          ${valuePillars.map((p,i) => html`
+            <div key=${p.titulo} class="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.08}s`}}>
+              <div class="text-2xl mb-2">${p.icon}</div>
+              <div class="font-bold text-sm mb-1 text-mongo-green">${p.titulo}</div>
+              <div class="text-xs text-white/70 leading-relaxed">${p.desc}</div>
+            </div>
+          `)}
+        </div>
+
+        <!-- Diagrama de integración -->
+        <div class="p-4 sm:p-6 bg-gradient-to-br from-mongo-green/10 to-mongo-forest/10 border border-mongo-green/30 rounded-xl">
+          <h3 class="font-bold text-base sm:text-lg mb-4 text-center">Atlas en el centro del stack ActionWave</h3>
+          <div class="grid grid-cols-3 gap-2 sm:gap-4 items-center">
+            <div class="space-y-2">
+              <div class="p-2 bg-white/10 rounded text-center text-[10px] sm:text-xs">📱 Apps Mobile</div>
+              <div class="p-2 bg-white/10 rounded text-center text-[10px] sm:text-xs">🌐 Web Frontend</div>
+              <div class="p-2 bg-white/10 rounded text-center text-[10px] sm:text-xs">🤖 ML Pipeline</div>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="text-mongo-green text-2xl">↔</div>
+              <div class="p-3 sm:p-4 bg-mongo-green text-mongo-dark rounded-xl text-center font-bold text-xs sm:text-sm glow-green">
+                MongoDB<br/>Atlas
+                <div class="text-[9px] sm:text-[10px] font-normal mt-1 opacity-80">Hub de perfiles</div>
+              </div>
+              <div class="text-mongo-green text-2xl">↔</div>
+            </div>
+            <div class="space-y-2">
+              <div class="p-2 bg-white/10 rounded text-center text-[10px] sm:text-xs">🕸️ Neo4j (grafos)</div>
+              <div class="p-2 bg-white/10 rounded text-center text-[10px] sm:text-xs">📊 Cassandra (eventos)</div>
+              <div class="p-2 bg-white/10 rounded text-center text-[10px] sm:text-xs">🔑 Redis (sesiones)</div>
+            </div>
+          </div>
+          <p class="text-center text-xs text-white/60 mt-4 italic">
+            Change Streams alimentan a los otros 3 paradigmas en tiempo real. Tu stack poliglota, sincronizado.
+          </p>
+        </div>
+      </div>
     </div>
   `;
 }
 
-// =================== BLOQUE 3 ===================
-const shards = [
-  { id: 1, region: 'CABA', color: '#00ED64' },
-  { id: 2, region: 'Córdoba', color: '#22D3EE' },
-  { id: 3, region: 'Rosario', color: '#A78BFA' },
-  { id: 4, region: 'Mendoza', color: '#FBBF24' },
+// =================== BLOQUE 4: Escala LATAM + futuro ===================
+const regiones = [
+  { id: 1, region: 'Bs. As.', color: '#00ED64' },
+  { id: 2, region: 'São Paulo', color: '#22D3EE' },
+  { id: 3, region: 'México', color: '#A78BFA' },
+  { id: 4, region: 'Bogotá', color: '#FBBF24' },
 ];
 
-const features = [
-  { titulo: 'Índices Geoespaciales', desc: '"Restaurantes a 2km de mí" en milisegundos. Mongo entiende coordenadas nativamente.', icon: '🗺️', code: 'db.restaurantes.createIndex({ "coords": "2dsphere" })' },
-  { titulo: 'Sharding Horizontal', desc: 'Si tu base crece, MongoDB la reparte entre múltiples servidores. Transparente al código.', icon: '⚡', code: 'sh.shardCollection("yapedis.pedidos", { region: 1 })' },
-  { titulo: 'Replica Sets', desc: 'Alta disponibilidad: si un servidor cae, otro toma su lugar automáticamente.', icon: '🛡️', code: 'rs.initiate({ _id: "rs0", members: [...] })' },
-  { titulo: 'Aggregation Pipeline', desc: 'Transformaciones complejas en una pipeline declarativa. Más simple que SQL anidado.', icon: '🔄', code: 'db.pedidos.aggregate([\n  { $match: ... },\n  { $group: ... },\n  { $sort: ... }\n])' },
+const capacidades = [
+  { titulo: 'Sharding por región', desc: 'Geo-partitioning con zone sharding. Latencia <50ms en cada país LATAM.', icon: '🌎' },
+  { titulo: '99.995% uptime SLA', desc: 'Replica sets multi-zona automáticos. Failover <30s sin intervención humana.', icon: '🛡️' },
+  { titulo: 'Atlas Vector Search', desc: 'Embeddings nativos para AI/personalización avanzada. Listo para LLMs.', icon: '🧠' },
+  { titulo: 'Change Streams', desc: 'Triggers reactivos para arquitectura event-driven. Cambios en milisegundos.', icon: '⚡' },
+  { titulo: 'Auto-scaling', desc: 'Vertical y horizontal automático según métricas reales. Sin sobre-provisioning.', icon: '📈' },
+  { titulo: 'Data Federation', desc: 'Queries cross-source (S3, otros DBs). Una sola interfaz para todo el data lake.', icon: '🔗' },
 ];
 
-function Bloque3() {
+function Bloque4() {
   const [queries, setQueries] = useState([]);
   const [running, setRunning] = useState(true);
   const [counts, setCounts] = useState({1:0,2:0,3:0,4:0});
@@ -367,51 +412,51 @@ function Bloque3() {
     const interval = setInterval(() => {
       const shardId = Math.floor(Math.random()*4)+1;
       const id = Date.now() + Math.random();
-      setQueries(q => [...q.slice(-20), { id, shardId, x: 45 + Math.random()*10 }]);
+      setQueries(q => [...q.slice(-15), { id, shardId }]);
       setCounts(c => ({...c, [shardId]: c[shardId] + 1}));
       setTimeout(() => setQueries(q => q.filter(x => x.id !== id)), 1300);
-    }, 350);
+    }, 400);
     return () => clearInterval(interval);
   }, [running]);
 
   return html`
-    <div class="min-h-full p-10 lg:p-16">
+    <div class="min-h-full p-5 sm:p-10 lg:p-16">
       <div class="max-w-7xl mx-auto">
-        <div class="mb-2 text-mongo-green text-sm font-semibold tracking-wider uppercase">Bloque 3 · Performance y Escala</div>
-        <h2 class="text-5xl font-extrabold mb-4">Hecho para <span class="gradient-text">escalar.</span></h2>
-        <p class="text-xl text-white/70 mb-10 max-w-3xl">
-          Si mañana YaPedís explota y tenés 10 millones de pedidos por día, MongoDB se reparte solo entre servidores. Sin reescribir nada.
+        <div class="mb-2 text-mongo-green text-xs sm:text-sm font-semibold tracking-wider uppercase">Bloque 4 · Escala, disponibilidad e integración</div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3">De <span class="gradient-text">15M</span> a 50M sin romperse.</h2>
+        <p class="text-sm sm:text-lg text-white/70 mb-6 max-w-3xl">
+          Capacidades diferenciales para escalabilidad, disponibilidad e integración — y cómo Atlas acompaña el crecimiento futuro de ActionWave.
         </p>
 
-        <div class="grid grid-cols-2 gap-4 mb-10">
-          ${features.map((f,i) => html`
-            <div key=${f.titulo} class="p-5 bg-white/5 border border-white/10 rounded-xl hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.08}s`}}>
-              <div class="flex items-start gap-3 mb-2">
-                <div class="text-3xl">${f.icon}</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+          ${capacidades.map((c,i) => html`
+            <div key=${c.titulo} class="p-3 sm:p-4 bg-white/5 border border-white/10 rounded-xl hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.06}s`}}>
+              <div class="flex items-start gap-2">
+                <div class="text-xl sm:text-2xl">${c.icon}</div>
                 <div class="flex-1">
-                  <div class="font-bold text-lg text-mongo-green">${f.titulo}</div>
-                  <div class="text-sm text-white/60">${f.desc}</div>
+                  <div class="font-bold text-sm text-mongo-green mb-1">${c.titulo}</div>
+                  <div class="text-xs text-white/60">${c.desc}</div>
                 </div>
               </div>
-              <pre class="text-[11px] font-mono bg-mongo-dark/60 p-2 rounded text-mongo-mint overflow-x-auto m-0">${f.code}</pre>
             </div>
           `)}
         </div>
 
-        <div class="bg-white/5 border border-white/10 rounded-xl p-6">
-          <div class="flex items-center justify-between mb-6">
+        <!-- Sharding viz responsive -->
+        <div class="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-6 mb-6">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div>
-              <h3 class="font-bold text-lg mb-1">🔀 Sharding en acción</h3>
-              <p class="text-sm text-white/50">Los pedidos se reparten entre 4 servidores según la región.</p>
+              <h3 class="font-bold text-sm sm:text-base mb-1">🔀 Sharding global LATAM</h3>
+              <p class="text-[11px] sm:text-xs text-white/50">Cada query va al shard regional correspondiente.</p>
             </div>
-            <button onClick=${()=>setRunning(!running)} class="px-4 py-2 bg-mongo-green text-mongo-dark font-bold rounded-lg hover:bg-mongo-mint transition-all">
+            <button onClick=${()=>setRunning(!running)} class="px-3 py-1.5 bg-mongo-green text-mongo-dark font-bold rounded-lg text-xs hover:bg-mongo-mint transition-all">
               ${running ? '⏸ Pausar' : '▶ Reanudar'}
             </button>
           </div>
 
-          <div class="relative h-64">
+          <div class="relative h-52 sm:h-56">
             <div class="absolute left-1/2 top-0 -translate-x-1/2 z-10">
-              <div class="px-4 py-2 bg-mongo-dark border-2 border-mongo-green rounded-lg font-mono text-sm text-mongo-green">mongos (router)</div>
+              <div class="px-3 py-1.5 bg-mongo-dark border-2 border-mongo-green rounded-lg font-mono text-[11px] sm:text-sm text-mongo-green">Atlas Router</div>
             </div>
 
             <div class="absolute inset-0 pointer-events-none" style=${{zIndex:1}}>
@@ -421,32 +466,51 @@ function Bloque3() {
                 return html`
                   <div key=${q.id} class="absolute query-drop" style=${{
                     left: `calc(${targetLeft}% - 4px)`,
-                    top: '40px',
+                    top: '32px',
                     width: '8px',
                     height: '8px',
                     borderRadius: '50%',
-                    background: shards[idx].color,
-                    boxShadow: `0 0 8px ${shards[idx].color}`
+                    background: regiones[idx].color,
+                    boxShadow: `0 0 8px ${regiones[idx].color}`
                   }}></div>
                 `;
               })}
             </div>
 
-            <div class="absolute bottom-0 left-0 right-0 flex justify-around gap-4">
-              ${shards.map(s => html`
-                <div key=${s.id} class="flex flex-col items-center gap-2">
-                  <div class="w-32 px-3 py-2 bg-white/10 border-2 rounded-lg text-center transition-transform" style=${{borderColor: s.color}}>
-                    <div class="text-xs uppercase tracking-wider text-white/60">Shard ${s.id}</div>
-                    <div class="font-bold text-sm" style=${{color: s.color}}>${s.region}</div>
+            <div class="absolute bottom-0 left-0 right-0 grid grid-cols-4 gap-1 sm:gap-2">
+              ${regiones.map(s => html`
+                <div key=${s.id} class="flex flex-col items-center gap-1">
+                  <div class="w-full px-1 sm:px-2 py-1.5 bg-white/10 border-2 rounded-lg text-center" style=${{borderColor: s.color}}>
+                    <div class="text-[8px] sm:text-[10px] uppercase tracking-wider text-white/60">Shard ${s.id}</div>
+                    <div class="font-bold text-[10px] sm:text-xs" style=${{color: s.color}}>${s.region}</div>
                   </div>
-                  <div class="text-xs text-white/40 font-mono tabular-nums">~${Math.floor(counts[s.id]/5) + 12} q/s</div>
+                  <div class="text-[9px] sm:text-[10px] text-white/40 font-mono tabular-nums">~${Math.floor(counts[s.id]/5) + 12} q/s</div>
                 </div>
               `)}
             </div>
           </div>
+        </div>
 
-          <div class="mt-4 text-center text-xs text-white/50">
-            ¿Querés más capacidad? <strong class="text-mongo-green">Sumá otro shard.</strong> Sin downtime. Sin reescribir queries.
+        <!-- Roadmap de crecimiento -->
+        <div class="p-4 sm:p-5 bg-gradient-to-br from-mongo-green/10 to-mongo-forest/10 border border-mongo-green/30 rounded-xl">
+          <h3 class="font-bold text-sm sm:text-base mb-3">🚀 Cómo acompañamos el crecimiento de ActionWave</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div class="flex gap-2">
+              <span class="text-mongo-green font-bold flex-shrink-0">15M → 50M</span>
+              <span class="text-white/80">Sumás shards, no reescribís código. Escalado lineal.</span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-mongo-green font-bold flex-shrink-0">AI/ML</span>
+              <span class="text-white/80">Atlas Vector Search ya soporta embeddings + RAG.</span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-mongo-green font-bold flex-shrink-0">Mobile apps</span>
+              <span class="text-white/80">Realm da sync offline-first cuando ActionWave lance nativo.</span>
+            </div>
+            <div class="flex gap-2">
+              <span class="text-mongo-green font-bold flex-shrink-0">Compliance</span>
+              <span class="text-white/80">Encryption + auditoría listas para regulaciones LATAM/GDPR.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -454,249 +518,84 @@ function Bloque3() {
   `;
 }
 
-// =================== BLOQUE 4 ===================
-const demoQueries = [
-  {
-    titulo: '1️⃣ Insertar un restaurante',
-    descripcion: 'Mostramos que podemos insertar un documento con cualquier estructura.',
-    code: `db.restaurants.insertOne({
-  name: "La Esquina de Don José",
-  cuisine: "Argentinian",
-  borough: "CABA",
-  address: {
-    street: "Av. Corrientes 1234",
-    coord: [-58.3886, -34.6037]
-  },
-  menu: [
-    { item: "Bife de Chorizo", price: 6500, popular: true },
-    { item: "Empanadas", price: 800, sinTacc: false }
-  ],
-  grades: [
-    { date: new Date(), grade: "A", score: 12 }
-  ]
-})`,
-    explicacion: 'Notá: objetos anidados, arrays, mezcla de tipos. SQL llora.'
-  },
-  {
-    titulo: '2️⃣ Buscar por estructura anidada',
-    descripcion: 'Una query simple a través de objetos anidados.',
-    code: `// Pizzerías en Brooklyn ordenadas por nombre
-db.restaurants.find(
-  { cuisine: "Pizza", borough: "Brooklyn" }
-).sort({ name: 1 }).limit(5)`,
-    explicacion: 'Mongo entiende dot notation: address.coord, grades.0.grade, etc.'
-  },
-  {
-    titulo: '3️⃣ Geo Query — el plato fuerte 🗺️',
-    descripcion: 'Restaurantes a menos de 500 metros de un punto.',
-    code: `// Primero el índice geoespacial
-db.restaurants.createIndex({ "address.coord": "2dsphere" })
-
-// Restaurantes cerca de Times Square
-db.restaurants.find({
-  "address.coord": {
-    $near: {
-      $geometry: {
-        type: "Point",
-        coordinates: [-73.9857, 40.7484]
-      },
-      $maxDistance: 500
-    }
-  }
-}).limit(10)`,
-    explicacion: '⚡ En SQL esto requiere PostGIS, plugins, y mucha matemática. En Mongo es nativo.'
-  },
-  {
-    titulo: '4️⃣ Aggregation — Top cuisines por barrio',
-    descripcion: 'Pipeline para sacar las 3 cocinas más populares en cada barrio.',
-    code: `db.restaurants.aggregate([
-  // Agrupar por barrio + cocina
-  { $group: {
-      _id: { borough: "$borough", cuisine: "$cuisine" },
-      total: { $sum: 1 }
-  }},
-  // Ordenar
-  { $sort: { "_id.borough": 1, total: -1 } },
-  // Top 3 por barrio
-  { $group: {
-      _id: "$_id.borough",
-      topCuisines: {
-        $push: { cuisine: "$_id.cuisine", count: "$total" }
-      }
-  }},
-  { $project: {
-      borough: "$_id",
-      top3: { $slice: ["$topCuisines", 3] }
-  }}
-])`,
-    explicacion: 'Pipeline declarativo. En SQL serían 3 subqueries anidadas + ROW_NUMBER().'
-  },
-  {
-    titulo: '5️⃣ $lookup — "joins" cuando hace falta',
-    descripcion: 'Cruzar restaurantes con pedidos. Sí, podés hacer joins.',
-    code: `db.restaurants.aggregate([
-  { $match: { cuisine: "Italian" } },
-  { $lookup: {
-      from: "orders",
-      localField: "_id",
-      foreignField: "restaurant_id",
-      as: "pedidos"
-  }},
-  { $project: {
-      name: 1,
-      totalPedidos: { $size: "$pedidos" }
-  }}
-])`,
-    explicacion: 'Mongo NO es anti-relacional. Cuando necesitás cruzar datos, podés.'
-  },
+// =================== BLOQUE 5: Objeciones + Cierre ===================
+const objeciones = [
+  { titulo: 'Costos', objecion: '"¿Atlas SaaS no nos sale más caro a largo plazo?"', mitigacion: 'Pay-as-you-go: empezás en $0.08/hora y escalás según demanda. Incluye DBAs, backups, monitoring. A 3 años, Atlas es 30-40% más barato que self-hosted equivalente.', icon: '💸' },
+  { titulo: 'Complejidad', objecion: '"Mi equipo no conoce Mongo. ¿Cuánto tarda en estar productivo?"', mitigacion: '#1 NoSQL hace 8 años. MongoDB University es gratis. Curva típica: 2 semanas para devs proficientes. Atlas elimina la operación.', icon: '🧠' },
+  { titulo: 'Lock-in', objecion: '"¿Quedamos atrapados con MongoDB?"', mitigacion: 'MQL documentado abiertamente. Datos JSON estándar exportables. DocumentDB (AWS) y Cosmos (Azure) son compatibles. Lock-in por valor, no por candado.', icon: '🔓' },
+  { titulo: 'Talento', objecion: '"¿Hay devs MongoDB en LATAM?"', mitigacion: '80K+ perfiles MongoDB en LinkedIn LATAM vs 8K Couchbase y 3K Cassandra. En Argentina, Mongo se enseña como NoSQL default.', icon: '🌎' }
 ];
 
-function Bloque4() {
-  const [activa, setActiva] = useState(0);
-  const [copied, setCopied] = useState(false);
-
-  const copy = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(demoQueries[activa].code);
-      setCopied(true);
-      setTimeout(()=>setCopied(false), 1500);
-    }
-  };
-
-  return html`
-    <div class="min-h-full p-10 lg:p-16">
-      <div class="max-w-7xl mx-auto">
-        <div class="mb-2 text-mongo-green text-sm font-semibold tracking-wider uppercase">Bloque 4 · Demo en Vivo</div>
-        <h2 class="text-5xl font-extrabold mb-4"><span class="gradient-text">Demo time.</span> Esto no es un mockup.</h2>
-        <p class="text-xl text-white/70 mb-8 max-w-3xl">
-          Saltamos a <strong class="text-mongo-green">MongoDB Compass</strong>, conectados al cluster Atlas con el dataset <code class="bg-white/10 px-2 py-0.5 rounded text-sm">sample_restaurants</code>.
-        </p>
-
-        <div class="grid grid-cols-12 gap-6">
-          <div class="col-span-4 space-y-2">
-            <div class="text-xs uppercase tracking-wider text-white/40 mb-2">Queries de la demo</div>
-            ${demoQueries.map((q,i) => html`
-              <button key=${i} onClick=${()=>setActiva(i)} class=${`w-full text-left p-3 rounded-lg transition-all ${activa===i ? 'bg-mongo-green/10 border-l-4 border-mongo-green' : 'bg-white/5 border-l-4 border-transparent hover:bg-white/10'}`}>
-                <div class="font-semibold text-sm mb-0.5">${q.titulo}</div>
-                <div class="text-xs text-white/50">${q.descripcion}</div>
-              </button>
-            `)}
-          </div>
-
-          <div class="col-span-8 fade-in" key=${activa}>
-            <div class="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
-              <div class="flex items-center justify-between px-4 py-2 bg-mongo-dark border-b border-white/10">
-                <div class="flex items-center gap-2">
-                  <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div class="w-3 h-3 rounded-full bg-mongo-green"></div>
-                  <span class="ml-2 text-xs text-white/50 font-mono">mongosh — sample_restaurants</span>
-                </div>
-                <button onClick=${copy} class="text-xs text-white/40 hover:text-mongo-green transition-colors">
-                  ${copied ? '✓ Copiado' : '📋 Copiar'}
-                </button>
-              </div>
-              <pre class="code-block text-sm m-0 max-h-[420px] overflow-auto" style=${{borderRadius:0,border:0}}>${demoQueries[activa].code}</pre>
-            </div>
-
-            <div class="mt-4 p-4 bg-mongo-green/10 border border-mongo-green/30 rounded-xl">
-              <div class="text-mongo-green font-bold text-sm mb-1">💡 Por qué importa:</div>
-              <div class="text-sm text-white/80">${demoQueries[activa].explicacion}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-// =================== BLOQUE 5 ===================
 const empresas = [
-  { nombre: 'Rappi', uso: 'Millones de pedidos/día' },
-  { nombre: 'Toyota', uso: 'IoT de vehículos conectados' },
-  { nombre: 'Forbes', uso: 'CMS de artículos y media' },
-  { nombre: 'Adidas', uso: 'Catálogo global de productos' },
-  { nombre: 'EA Games', uso: 'Perfiles y stats de jugadores' },
-  { nombre: 'Sega', uso: 'Backend de juegos online' },
-  { nombre: 'eBay', uso: 'Listados de productos' },
-  { nombre: 'Verizon', uso: 'Telco a escala masiva' },
-];
-
-const cuandoSi = [
-  'Catálogos heterogéneos (e-commerce, content)',
-  'Apps móviles con datos en tiempo real',
-  'IoT y telemetría',
-  'Analytics y agregaciones complejas',
-  'Prototipos rápidos / MVPs',
-  'Sistemas con datos no estructurados',
-];
-
-const cuandoNo = [
-  'Transacciones bancarias multi-tabla',
-  'Sistemas con ACID estricto y consistencia fuerte',
-  'Reporting puramente relacional/tabular',
-  'Schemas muy rígidos y estables',
+  { nombre: 'Adidas', uso: 'Catálogo global' },
+  { nombre: 'Toyota', uso: 'IoT vehículos' },
+  { nombre: 'Forbes', uso: 'CMS + personalización' },
+  { nombre: 'EA Games', uso: 'Perfiles jugadores' },
+  { nombre: 'Verizon', uso: 'Telco a escala' },
+  { nombre: 'Cisco', uso: 'Config management' },
+  { nombre: 'eBay', uso: 'Catálogo productos' },
+  { nombre: 'SEGA', uso: 'Backend juegos' },
 ];
 
 function Bloque5() {
-  // ⚠️ CAMBIÁ ESTA URL POR LA TUYA DE MENTIMETER
   const mentiUrl = 'https://www.menti.com/TU-CODIGO';
   return html`
-    <div class="min-h-full p-10 lg:p-16 relative">
+    <div class="min-h-full p-5 sm:p-10 lg:p-16">
       <div class="max-w-7xl mx-auto">
-        <div class="mb-2 text-mongo-green text-sm font-semibold tracking-wider uppercase">Bloque 5 · Cierre</div>
-        <h2 class="text-5xl font-extrabold mb-4">Esto <span class="gradient-text">ya está pasando</span>.</h2>
-        <p class="text-xl text-white/70 mb-10 max-w-3xl">No es teoría. Estas empresas mueven millones de operaciones por día sobre MongoDB.</p>
+        <div class="mb-2 text-mongo-green text-xs sm:text-sm font-semibold tracking-wider uppercase">Bloque 5 · Anticipando objeciones + Cierre</div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3">Sabemos lo que <span class="gradient-text">vas a preguntar</span>.</h2>
+        <p class="text-sm sm:text-lg text-white/70 mb-6 max-w-3xl">
+          Las 4 preocupaciones reales de un CTO frente a Atlas, y por qué ninguna debería frenar la decisión.
+        </p>
 
-        <div class="grid grid-cols-4 gap-3 mb-12">
-          ${empresas.map((emp,i) => html`
-            <div key=${emp.nombre} class="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-mongo-green/40 hover:bg-mongo-green/5 transition-all text-center fade-up" style=${{animationDelay:`${i*0.05}s`}}>
-              <div class="font-bold text-lg mb-1">${emp.nombre}</div>
-              <div class="text-xs text-white/50">${emp.uso}</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+          ${objeciones.map((o, i) => html`
+            <div key=${o.titulo} class="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.08}s`}}>
+              <div class="flex items-start gap-2 mb-2">
+                <div class="text-2xl">${o.icon}</div>
+                <div class="flex-1">
+                  <div class="font-bold text-sm text-mongo-green mb-1">${o.titulo}</div>
+                  <div class="text-[11px] sm:text-xs italic text-white/60">${o.objecion}</div>
+                </div>
+              </div>
+              <div class="text-xs text-white/80 border-l-2 border-mongo-green/40 pl-2.5">${o.mitigacion}</div>
             </div>
           `)}
         </div>
 
-        <div class="grid grid-cols-2 gap-6 mb-12">
-          <div class="p-6 bg-mongo-green/10 border border-mongo-green/30 rounded-xl">
-            <h3 class="font-bold text-lg mb-3 text-mongo-green flex items-center gap-2">✓ Cuándo SÍ usar MongoDB</h3>
-            <ul class="space-y-1.5 text-sm list-none p-0">
-              ${cuandoSi.map(c => html`<li key=${c} class="flex items-start gap-2"><span class="text-mongo-green mt-0.5">›</span><span class="text-white/80">${c}</span></li>`)}
-            </ul>
-          </div>
-          <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
-            <h3 class="font-bold text-lg mb-3 text-white/80 flex items-center gap-2">⚠ Cuándo NO (mejor SQL)</h3>
-            <ul class="space-y-1.5 text-sm list-none p-0">
-              ${cuandoNo.map(c => html`<li key=${c} class="flex items-start gap-2"><span class="text-white/40 mt-0.5">›</span><span class="text-white/60">${c}</span></li>`)}
-            </ul>
-            <div class="mt-3 text-xs text-white/40 italic">La honestidad técnica vende mejor que la sobreventa.</div>
+        <div class="mb-6">
+          <h3 class="text-base sm:text-xl font-bold mb-3">No estás solo. <span class="gradient-text">Estos también nos eligieron.</span></h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            ${empresas.map((emp,i) => html`
+              <div key=${emp.nombre} class="p-2 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 hover:bg-mongo-green/5 transition-all text-center fade-up" style=${{animationDelay:`${i*0.03}s`}}>
+                <div class="font-bold text-xs sm:text-sm">${emp.nombre}</div>
+                <div class="text-[9px] sm:text-[10px] text-white/50">${emp.uso}</div>
+              </div>
+            `)}
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-6">
-          <div class="p-8 bg-gradient-to-br from-mongo-green/20 to-mongo-forest/20 border border-mongo-green/40 rounded-2xl">
-            <div class="text-mongo-green text-xs uppercase tracking-wider font-semibold mb-2">Pregunta final</div>
-            <h3 class="text-3xl font-extrabold mb-3">¿Considerarías MongoDB para tu próximo proyecto?</h3>
-            <p class="text-white/70 mb-4">Entrá al Mentimeter y respondé. Comparamos con tu respuesta del inicio.</p>
-            <a href=${mentiUrl} target="_blank" rel="noreferrer" class="inline-block px-6 py-3 bg-mongo-green text-mongo-dark font-bold rounded-lg hover:bg-mongo-mint transition-all hover:scale-105 glow-green">Responder en Mentimeter →</a>
-            <div class="mt-3 text-xs text-white/40 font-mono">⚠ Recordá cambiar mentiUrl en el código</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+          <div class="p-4 bg-gradient-to-br from-mongo-green/20 to-mongo-forest/20 border border-mongo-green/40 rounded-xl">
+            <div class="text-mongo-green text-[10px] uppercase tracking-wider font-semibold mb-1">Pregunta al comité</div>
+            <h3 class="text-base sm:text-lg font-extrabold mb-2">¿ActionWave avanza con Atlas?</h3>
+            <a href=${mentiUrl} target="_blank" rel="noreferrer" class="inline-block px-4 py-2 bg-mongo-green text-mongo-dark font-bold rounded-lg hover:bg-mongo-mint transition-all text-xs sm:text-sm">Votar en Mentimeter →</a>
           </div>
 
-          <div class="p-8 bg-white/5 border border-white/10 rounded-2xl flex flex-col justify-center">
-            <div class="text-white/40 text-xs uppercase tracking-wider font-semibold mb-2">Probalo gratis</div>
-            <h3 class="text-2xl font-extrabold mb-3">MongoDB Atlas tiene un tier <span class="gradient-text">gratuito para siempre</span>.</h3>
-            <ul class="text-sm text-white/70 space-y-1 mb-4 list-none p-0">
-              <li>• 512 MB de storage</li>
-              <li>• Sin tarjeta de crédito</li>
-              <li>• Compass + Atlas Search incluidos</li>
-            </ul>
-            <a href="https://www.mongodb.com/cloud/atlas/register" target="_blank" rel="noreferrer" class="text-mongo-green hover:text-mongo-mint underline text-sm">mongodb.com/cloud/atlas/register →</a>
+          <div class="p-4 bg-white/5 border border-white/10 rounded-xl">
+            <div class="text-white/40 text-[10px] uppercase tracking-wider font-semibold mb-1">Próximos pasos</div>
+            <h3 class="text-sm sm:text-base font-extrabold mb-2">Plan en <span class="gradient-text">3 fases</span></h3>
+            <div class="space-y-1 text-[11px] sm:text-xs">
+              <div class="flex gap-2"><span class="text-mongo-green font-bold">1.</span><span class="text-white/80"><strong>PoC (4 sem):</strong> 1M perfiles, validamos latencia.</span></div>
+              <div class="flex gap-2"><span class="text-mongo-green font-bold">2.</span><span class="text-white/80"><strong>Piloto (8 sem):</strong> Bs.As. en producción + training.</span></div>
+              <div class="flex gap-2"><span class="text-mongo-green font-bold">3.</span><span class="text-white/80"><strong>Escala (12 sem):</strong> rollout LATAM completo.</span></div>
+            </div>
           </div>
         </div>
 
-        <div class="mt-12 text-center text-white/40 text-sm">
-          <p class="text-lg mb-2">Gracias 🙌</p>
-          <p>YaPedís × MongoDB Pitch — Gestión y Arquitectura de Datos · 2026</p>
+        <div class="text-center text-white/40 text-xs">
+          <p class="text-base text-mongo-green font-bold mb-1">Gracias, Catalina 🙌</p>
+          <p>MongoDB Atlas × ActionWave</p>
         </div>
       </div>
     </div>
@@ -705,12 +604,12 @@ function Bloque5() {
 
 // =================== APP ===================
 const slides = [
-  { id: 0, label: 'Inicio', component: Portada },
-  { id: 1, label: '1 · Problema', component: Bloque1 },
-  { id: 2, label: '2 · ¿Qué es Mongo?', component: Bloque2 },
-  { id: 3, label: '3 · Escala', component: Bloque3 },
-  { id: 4, label: '4 · Demo', component: Bloque4 },
-  { id: 5, label: '5 · Cierre', component: Bloque5 },
+  { id: 0, labelDesktop: 'Inicio', labelMobile: '⌂', component: Portada },
+  { id: 1, labelDesktop: '1 · Documental', labelMobile: '1', component: Bloque1 },
+  { id: 2, labelDesktop: '2 · Modelo', labelMobile: '2', component: Bloque2 },
+  { id: 3, labelDesktop: '3 · Propuesta', labelMobile: '3', component: Bloque3 },
+  { id: 4, labelDesktop: '4 · Escala', labelMobile: '4', component: Bloque4 },
+  { id: 5, labelDesktop: '5 · Cierre', labelMobile: '5', component: Bloque5 },
 ];
 
 function App() {
@@ -732,36 +631,59 @@ function App() {
     return () => window.removeEventListener('keydown', handler);
   }, [current, goTo]);
 
+  // Swipe en mobile
+  useEffect(() => {
+    let startX = 0, startY = 0;
+    const onStart = (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    };
+    const onEnd = (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        if (dx < 0) goTo(current + 1);
+        else goTo(current - 1);
+      }
+    };
+    window.addEventListener('touchstart', onStart, { passive: true });
+    window.addEventListener('touchend', onEnd, { passive: true });
+    return () => {
+      window.removeEventListener('touchstart', onStart);
+      window.removeEventListener('touchend', onEnd);
+    };
+  }, [current, goTo]);
+
   const Current = slides[current].component;
 
   return html`
     <div class="h-screen w-screen bg-mongo-dark text-white flex flex-col overflow-hidden">
       <div class="flex-1 relative overflow-hidden">
-        <div key=${current} class="absolute inset-0 overflow-y-auto scrollbar-hide fade-in">
+        <div key=${current} class="absolute inset-0 overflow-y-auto scrollbar-hide fade-in pb-2">
           <${Current} goTo=${goTo} />
         </div>
       </div>
 
-      <div class="border-t border-white/10 bg-mongo-dark/95 backdrop-blur px-6 py-3 flex items-center justify-between gap-4">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-mongo-green flex items-center justify-center">
-            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="#001E2B">
+      <div class="border-t border-white/10 bg-mongo-dark/95 backdrop-blur px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between gap-2 sm:gap-4 flex-shrink-0">
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-mongo-green flex items-center justify-center">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5" fill="#001E2B">
               <path d="M12 2C13 5 17 8 17 13c0 4-3 7-5 7s-5-3-5-7c0-5 4-8 5-11z"></path>
             </svg>
           </div>
-          <span class="font-bold text-sm tracking-tight">YaPedís × MongoDB</span>
+          <span class="hidden md:inline font-bold text-sm tracking-tight">MongoDB × ActionWave</span>
         </div>
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-hide">
           ${slides.map((s,i) => html`
-            <button key=${s.id} onClick=${()=>goTo(i)} class=${`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${i===current ? 'bg-mongo-green text-mongo-dark' : 'text-white/50 hover:text-white hover:bg-white/5'}`}>
-              ${s.label}
+            <button key=${s.id} onClick=${()=>goTo(i)} class=${`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-[11px] sm:text-xs font-medium transition-all flex-shrink-0 ${i===current ? 'bg-mongo-green text-mongo-dark' : 'text-white/50 hover:text-white hover:bg-white/5'}`}>
+              <span class="sm:hidden">${s.labelMobile}</span>
+              <span class="hidden sm:inline">${s.labelDesktop}</span>
             </button>
           `)}
         </div>
-        <div class="flex items-center gap-2 text-xs text-white/40">
-          <kbd class="px-1.5 py-0.5 bg-white/10 rounded">←</kbd>
-          <kbd class="px-1.5 py-0.5 bg-white/10 rounded">→</kbd>
-          <span>para navegar</span>
+        <div class="hidden lg:flex items-center gap-1.5 text-[10px] text-white/40 flex-shrink-0">
+          <kbd class="px-1 py-0.5 bg-white/10 rounded">←</kbd>
+          <kbd class="px-1 py-0.5 bg-white/10 rounded">→</kbd>
         </div>
       </div>
     </div>
