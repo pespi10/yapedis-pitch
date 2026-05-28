@@ -272,11 +272,18 @@ function Bloque2() {
             { titulo: 'Desnormalización', desc: 'Datos relacionados juntos. Sin JOINs forzados.', icon: '📐' },
             { titulo: 'Validación cuando querés', desc: 'Schema-on-read o schema-on-write — vos elegís.', icon: '🛡️' }
           ].map((c,i) => html`
-            <div key=${c.titulo} class="p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.08}s`}}>
+            <div key=${c.titulo} class="relative p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.08}s`}}>
               <div class="flex items-start gap-2">
                 <div class="text-xl">${c.icon}</div>
                 <div class="flex-1">
-                  <div class="font-bold text-xs sm:text-sm text-mongo-green leading-tight">${c.titulo}</div>
+                  <div class="flex items-center justify-between gap-2 w-full">
+                    <div class="font-bold text-xs sm:text-sm text-mongo-green leading-tight">${c.titulo}</div>
+                    ${c.atlas && html`
+                      <div class="bg-mongo-green text-mongo-dark text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 rounded-md tracking-wide shrink-0 leading-none">
+                        ATLAS
+                      </div>
+                    `}
+                  </div>
                   <div class="text-[11px] text-white/60 leading-snug">${c.desc}</div>
                 </div>
               </div>
@@ -360,7 +367,7 @@ function Bloque3() {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-2">
           ${valuePillars.map((p,i) => html`
-            <div key=${p.titulo} class="p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.06}s`}}>
+            <div key=${p.titulo} class="relative p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.06}s`}}>
               <div class="text-xl mb-1">${p.icon}</div>
               <div class="font-bold text-xs sm:text-sm mb-0.5 text-mongo-green leading-tight">${p.titulo}</div>
               <div class="text-[10px] sm:text-[11px] text-white/70 leading-snug">${p.desc}</div>
@@ -410,10 +417,10 @@ const regiones = [
 const capacidades = [
   { titulo: 'Sharding por región', desc: 'Geo-partitioning con zone sharding. Latencia <50ms en cada país LATAM.', icon: '🌎' },
   { titulo: 'Replica sets multi-AZ', desc: 'Réplica de datos en zonas independientes. Failover automático <30s. Sin SPOF.', icon: '🛡️' },
-  { titulo: 'Search nativo (Lucene)', desc: 'Full-text + facetas integrado. Segmentás millones de perfiles sin un Elasticsearch separado.', icon: '🔍' },
-  { titulo: 'Change Streams', desc: 'Triggers reactivos. Tu motor de campañas reacciona a cambios en milisegundos.', icon: '⚡' },
-  { titulo: 'Encryption + Compliance', desc: 'At-rest, in-transit y client-side field-level (CSFLE). Auditoría para LATAM/GDPR.', icon: '🔒' },
-  { titulo: 'Auto-scaling', desc: 'Sharding y replicas escalan según métricas reales. Sin sobre-provisioning.', icon: '📈' },
+  { titulo: 'Search nativo (Lucene)', desc: 'Full-text + facetas integrado. Segmentás millones de perfiles sin un Elasticsearch separado.', icon: '🔍', atlas: true },
+  { titulo: 'Change Streams', desc: 'Triggers reactivos. Tu motor de campañas reacciona a cambios en milisegundos.', icon: '⚡', atlas: true },
+  { titulo: 'Encryption + Compliance', desc: 'At-rest, in-transit y client-side field-level (CSFLE). Auditoría para LATAM/GDPR.', icon: '🔒', atlas: true },
+  { titulo: 'Auto-scaling', desc: 'Sharding y replicas escalan según métricas reales. Sin sobre-provisioning.', icon: '📈', atlas: true },
 ];
 
 function Bloque4() {
@@ -444,11 +451,18 @@ function Bloque4() {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-2">
           ${capacidades.map((c,i) => html`
-            <div key=${c.titulo} class="p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.05}s`}}>
+            <div key=${c.titulo} class="relative p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.05}s`}}>
               <div class="flex items-start gap-2">
                 <div class="text-xl">${c.icon}</div>
                 <div class="flex-1">
-                  <div class="font-bold text-xs sm:text-sm text-mongo-green leading-tight">${c.titulo}</div>
+                  <div class="flex items-center justify-between gap-2 w-full">
+                    <div class="font-bold text-xs sm:text-sm text-mongo-green leading-tight">${c.titulo}</div>
+                    ${c.atlas && html`
+                      <div class="bg-mongo-green text-mongo-dark text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 rounded-md tracking-wide shrink-0 leading-none">
+                        ATLAS
+                      </div>
+                    `}
+                  </div>
                   <div class="text-[11px] text-white/60 leading-snug">${c.desc}</div>
                 </div>
               </div>
@@ -550,7 +564,7 @@ function Bloque5() {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
           ${objeciones.map((o, i) => html`
-            <div key=${o.titulo} class="p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.06}s`}}>
+            <div key=${o.titulo} class="relative p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.06}s`}}>
               <div class="flex items-start gap-2 mb-1.5">
                 <div class="text-xl">${o.icon}</div>
                 <div class="flex-1">
