@@ -40,6 +40,22 @@
   @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
   .fade-in { animation: fade-in 0.4s ease-out; }
   @keyframes drop { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(120px); } }
+
+  .slide-fit { min-height: calc(100vh - 52px); height: calc(100vh - 52px); overflow: hidden; }
+  .compact-slide h2 { line-height: 0.98; }
+  @media (max-width: 767px) {
+    .slide-fit { min-height: calc(100vh - 50px); height: calc(100vh - 50px); }
+  }
+  @keyframes swipeRightHint {
+    0%, 100% { transform: translateX(0); opacity: .35; }
+    45% { transform: translateX(34px); opacity: 1; }
+  }
+  @keyframes swipeLeftHint {
+    0%, 100% { transform: translateX(0); opacity: .35; }
+    45% { transform: translateX(-34px); opacity: 1; }
+  }
+  .swipe-right-hint { animation: swipeRightHint 1.25s ease-in-out infinite; }
+  .swipe-left-hint { animation: swipeLeftHint 1.25s ease-in-out infinite; }
   .query-drop { animation: drop 1.2s ease-in forwards; }
   input[type=range].mongo-range { accent-color: #00ED64; }
   textarea, button { font-family: inherit; }
@@ -58,16 +74,16 @@ function Portada({ goTo }) {
   const url = typeof window !== 'undefined' ? window.location.href : '';
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
   return html`
-    <div class="min-h-full flex items-center justify-center p-4 sm:p-8 relative">
+    <div class="slide-fit flex items-center justify-center p-4 sm:p-8 relative compact-slide">
       <div class="absolute top-10 left-10 w-72 h-72 rounded-full bg-mongo-green/10 blur-[100px] pointer-events-none"></div>
       <div class="absolute bottom-10 right-10 w-72 h-72 rounded-full bg-mongo-forest/20 blur-[100px] pointer-events-none"></div>
       <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center max-w-6xl w-full">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mongo-green/10 border border-mongo-green/30 text-mongo-green text-[10px] sm:text-xs font-medium mb-3 fade-up" style=${{animationDelay:'0.1s'}}>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mongo-green/10 border border-mongo-green/30 text-mongo-green text-[10px] sm:text-xs font-medium mb-2 fade-up" style=${{animationDelay:'0.1s'}}>
             <span class="w-2 h-2 bg-mongo-green rounded-full pulse-dot"></span>
             ActionWave · Componente A — Perfiles
           </div>
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] mb-3 fade-up" style=${{animationDelay:'0.2s'}}>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] mb-2 fade-up" style=${{animationDelay:'0.2s'}}>
             Documental está claro.
             <br/>
             <span class="text-white/60">La pregunta es <em class="gradient-text not-italic">cuál</em>.</span>
@@ -123,7 +139,7 @@ const badgeMap = {
   'addon': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Add-on' },
   'enterprise': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Enterprise' },
   'no': { color: 'bg-red-500/20 text-red-400', label: '✗ No' },
-  'pay-as-you-go': { color: 'bg-mongo-green/20 text-mongo-green', label: '✓ Pay-as-go' },
+  'pay-as-you-go': { color: 'bg-mongo-green/20 text-mongo-green', label: '✓ Atlas PAYG' },
   'per-read': { color: 'bg-red-500/20 text-red-400', label: '⚠ Por lectura' },
   'per-instance': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Por instancia' },
   'per-node': { color: 'bg-yellow-500/20 text-yellow-400', label: '△ Por nodo' },
@@ -140,11 +156,11 @@ function badgeRender(value) {
 
 function Bloque1() {
   return html`
-    <div class="min-h-full p-4 sm:p-6 lg:p-8">
-      <div class="max-w-6xl mx-auto">
+    <div class="slide-fit p-2.5 sm:p-3 lg:p-5 compact-slide">
+      <div class="max-w-6xl mx-auto h-full">
         <div class="mb-1 text-mongo-green text-[10px] sm:text-xs font-semibold tracking-wider uppercase">Bloque 1 · El campo de batalla</div>
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2">SQL quedó atrás. <span class="gradient-text">¿Y ahora?</span></h2>
-        <p class="text-xs sm:text-sm lg:text-base text-white/70 mb-4 max-w-3xl">
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold mb-1">SQL quedó atrás. <span class="gradient-text">¿Y ahora?</span></h2>
+        <p class="text-xs sm:text-sm text-white/70 mb-2 max-w-3xl">
           Hay 4 opciones documentales serias. <strong class="text-mongo-green">Solo una</strong> cumple las 8 capacidades que ActionWave necesita.
         </p>
 
@@ -212,8 +228,9 @@ function Bloque1() {
           </div>
         </div>
 
-        <div class="mt-3 text-center text-white/60 text-[11px] italic">
+        <div class="mt-2 text-center text-white/60 text-[11px] italic">
           💡 <strong class="text-white">DB-Engines</strong>: MongoDB #1 NoSQL hace 8 años consecutivos.
+          <br/><span class="text-[10px] text-white/40">* El modelo PAYG hace referencia a MongoDB Atlas (servicio cloud managed): Flex aprox. USD 8–30/mes; Dedicated desde ~USD 60/mes.</span>
         </div>
       </div>
     </div>
@@ -241,15 +258,15 @@ function Bloque2() {
   }, [json]);
 
   return html`
-    <div class="min-h-full p-4 sm:p-6 lg:p-8">
-      <div class="max-w-6xl mx-auto">
+    <div class="slide-fit p-2.5 sm:p-3 lg:p-5 compact-slide">
+      <div class="max-w-6xl mx-auto h-full">
         <div class="mb-1 text-mongo-green text-[10px] sm:text-xs font-semibold tracking-wider uppercase">Bloque 2 · El modelo</div>
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2">Un usuario es <span class="gradient-text">un documento</span>.</h2>
-        <p class="text-xs sm:text-sm lg:text-base text-white/70 mb-3 max-w-3xl">
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold mb-1">Un usuario es <span class="gradient-text">un documento</span>.</h2>
+        <p class="text-xs sm:text-sm text-white/70 mb-2 max-w-3xl">
           Demografía + comportamiento + features + segmentos + campañas. Todo en un solo documento, sin JOINs.
         </p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
           ${[
             { titulo: 'Modelo que evoluciona', desc: 'Agregás un campo nuevo al documento. Sin ALTER TABLE.', icon: '🧬' },
             { titulo: 'Desnormalización', desc: 'Datos relacionados juntos. Sin JOINs forzados.', icon: '📐' },
@@ -292,7 +309,7 @@ function Bloque2() {
           </div>
         </div>
 
-        <div class="mt-3 p-2.5 bg-mongo-green/10 border border-mongo-green/30 rounded-lg text-[11px] sm:text-xs">
+        <div class="mt-2 p-2.5 bg-mongo-green/10 border border-mongo-green/30 rounded-lg text-[11px] sm:text-xs">
           <strong class="text-mongo-green">💡 Probá:</strong> borrá cualquier campo o agregá uno nuevo (ej. <code class="bg-mongo-dark px-1 py-0.5 rounded text-[10px]">"telefono": "11-1234"</code>). Mientras siga siendo JSON válido, MongoDB lo guarda igual. <strong>Sin migración. Sin permisos de DBA.</strong>
         </div>
       </div>
@@ -333,26 +350,26 @@ const valuePillars = [
 
 function Bloque3() {
   return html`
-    <div class="min-h-full p-4 sm:p-6 lg:p-8">
-      <div class="max-w-6xl mx-auto">
+    <div class="slide-fit p-2.5 sm:p-3 lg:p-5 compact-slide">
+      <div class="max-w-6xl mx-auto h-full">
         <div class="mb-1 text-mongo-green text-[10px] sm:text-xs font-semibold tracking-wider uppercase">Bloque 3 · Propuesta de Valor</div>
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2">MongoDB potencia <span class="gradient-text">todo</span> el ecosistema.</h2>
-        <p class="text-xs sm:text-sm lg:text-base text-white/70 mb-3 max-w-3xl">
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold mb-1">MongoDB potencia <span class="gradient-text">todo</span> el ecosistema.</h2>
+        <p class="text-xs sm:text-sm text-white/70 mb-2 max-w-3xl">
           <em>"¿Qué ventajas aporta nuestro enfoque al ecosistema completo de ActionWave?"</em> Acá 6 respuestas concretas.
         </p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-2">
           ${valuePillars.map((p,i) => html`
             <div key=${p.titulo} class="p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.06}s`}}>
               <div class="text-xl mb-1">${p.icon}</div>
               <div class="font-bold text-xs sm:text-sm mb-0.5 text-mongo-green leading-tight">${p.titulo}</div>
-              <div class="text-[11px] text-white/70 leading-snug">${p.desc}</div>
+              <div class="text-[10px] sm:text-[11px] text-white/70 leading-snug">${p.desc}</div>
             </div>
           `)}
         </div>
 
-        <div class="p-3 sm:p-4 bg-gradient-to-br from-mongo-green/10 to-mongo-forest/10 border border-mongo-green/30 rounded-xl">
-          <h3 class="font-bold text-sm mb-3 text-center">MongoDB en el centro del stack ActionWave</h3>
+        <div class="p-2.5 sm:p-3 bg-gradient-to-br from-mongo-green/10 to-mongo-forest/10 border border-mongo-green/30 rounded-xl">
+          <h3 class="font-bold text-sm mb-2 text-center">MongoDB en el centro del stack ActionWave</h3>
           <div class="grid grid-cols-3 gap-2 sm:gap-4 items-center">
             <div class="space-y-1.5">
               <div class="p-1.5 bg-white/10 rounded text-center text-[10px]">📱 Apps Mobile</div>
@@ -417,15 +434,15 @@ function Bloque4() {
   }, [running]);
 
   return html`
-    <div class="min-h-full p-4 sm:p-6 lg:p-8">
-      <div class="max-w-6xl mx-auto">
+    <div class="slide-fit p-2.5 sm:p-3 lg:p-5 compact-slide">
+      <div class="max-w-6xl mx-auto h-full">
         <div class="mb-1 text-mongo-green text-[10px] sm:text-xs font-semibold tracking-wider uppercase">Bloque 4 · Escala, disponibilidad e integración</div>
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2">De <span class="gradient-text">15M</span> a 50M sin romperse.</h2>
-        <p class="text-xs sm:text-sm lg:text-base text-white/70 mb-3 max-w-3xl">
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold mb-1">De <span class="gradient-text">15M</span> a 50M sin romperse.</h2>
+        <p class="text-xs sm:text-sm text-white/70 mb-2 max-w-3xl">
           Capacidades diferenciales y cómo MongoDB acompaña el crecimiento futuro de ActionWave.
         </p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-2">
           ${capacidades.map((c,i) => html`
             <div key=${c.titulo} class="p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.05}s`}}>
               <div class="flex items-start gap-2">
@@ -439,7 +456,7 @@ function Bloque4() {
           `)}
         </div>
 
-        <div class="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 mb-3">
+        <div class="bg-white/5 border border-white/10 rounded-xl p-2.5 sm:p-3 mb-2">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
             <div>
               <h3 class="font-bold text-xs sm:text-sm">🔀 Sharding global LATAM</h3>
@@ -503,7 +520,7 @@ function Bloque4() {
 
 // =================== BLOQUE 5: Objeciones + Cierre ===================
 const objeciones = [
-  { titulo: 'Costos', objecion: '"¿MongoDB managed no es caro a largo plazo?"', mitigacion: 'Pay-as-you-go: empezás chico, escalás según demanda. Incluye DBAs, backups, monitoring. A 3 años, MongoDB managed sale 30-40% más barato que self-hosted equivalente.', icon: '💸' },
+  { titulo: 'Costos', objecion: '"¿MongoDB managed no es caro a largo plazo?"', mitigacion: 'MongoDB Atlas ofrece un modelo managed pay-as-you-go. Escala según uso real e incluye backups, monitoreo, replicación y mantenimiento operativo.', icon: '💸' },
   { titulo: 'Complejidad', objecion: '"Mi equipo no conoce MongoDB. ¿Cuánto tarda en estar productivo?"', mitigacion: '#1 NoSQL hace 8 años. MongoDB University es gratis. Curva típica: 2 semanas para devs proficientes. El servicio managed elimina la operación.', icon: '🧠' },
   { titulo: 'Lock-in', objecion: '"¿Quedamos atrapados con MongoDB?"', mitigacion: 'Query language documentado abiertamente. Datos JSON estándar exportables. DocumentDB y Cosmos DB son compatibles con la API. Lock-in por valor, no por candado.', icon: '🔓' },
   { titulo: 'Talento', objecion: '"¿Hay devs MongoDB en LATAM?"', mitigacion: '80K+ perfiles MongoDB en LinkedIn LATAM vs 8K Couchbase y 3K Cassandra. En Argentina se enseña como NoSQL default.', icon: '🌎' }
@@ -523,17 +540,17 @@ const empresas = [
 function Bloque5() {
   const mentiUrl = 'https://www.menti.com/TU-CODIGO';
   return html`
-    <div class="min-h-full p-4 sm:p-6 lg:p-8">
-      <div class="max-w-6xl mx-auto">
+    <div class="slide-fit p-2.5 sm:p-3 lg:p-5 compact-slide">
+      <div class="max-w-6xl mx-auto h-full">
         <div class="mb-1 text-mongo-green text-[10px] sm:text-xs font-semibold tracking-wider uppercase">Bloque 5 · Objeciones + Cierre</div>
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2">Sabemos lo que <span class="gradient-text">vas a preguntar</span>.</h2>
-        <p class="text-xs sm:text-sm lg:text-base text-white/70 mb-3 max-w-3xl">
-          Las 4 preocupaciones reales y por qué ninguna debería frenar la decisión.
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold mb-1"><span class="gradient-text">Datos de Negocio</span>.</h2>
+        <p class="text-xs sm:text-sm text-white/70 mb-2 max-w-3xl">
+          Las preocupaciones reales y por qué no deberían frenar la decisión.
         </p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
           ${objeciones.map((o, i) => html`
-            <div key=${o.titulo} class="p-3 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.06}s`}}>
+            <div key=${o.titulo} class="p-2.5 bg-white/5 border border-white/10 rounded-lg hover:border-mongo-green/40 transition-all fade-up" style=${{animationDelay:`${i*0.06}s`}}>
               <div class="flex items-start gap-2 mb-1.5">
                 <div class="text-xl">${o.icon}</div>
                 <div class="flex-1">
@@ -541,54 +558,61 @@ function Bloque5() {
                   <div class="text-[11px] italic text-white/60">${o.objecion}</div>
                 </div>
               </div>
-              <div class="text-[11px] text-white/80 border-l-2 border-mongo-green/40 pl-2">${o.mitigacion}</div>
+              <div class="text-[10px] sm:text-[11px] text-white/80 border-l-2 border-mongo-green/40 pl-2 leading-snug">${o.mitigacion}</div>
+              ${o.titulo === 'Costos' && html`
+                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+                  <div class="p-2 bg-white/5 rounded border border-white/10">
+                    <div class="text-white/50 uppercase mb-1 font-bold">Self-hosted estimado</div>
+                    <div class="space-y-0.5 text-white/70 leading-snug">
+                      <div><strong class="text-white">Dev / MVP:</strong> USD 80–250/mes</div>
+                      <div><strong class="text-white">Prod HA:</strong> USD 400–1.200+/mes</div>
+                      <div class="text-white/45">Incluye servidores, backups, monitoreo, failover y horas DevOps/DBA.</div>
+                    </div>
+                  </div>
+                  <div class="p-2 bg-mongo-green/10 rounded border border-mongo-green/30">
+                    <div class="text-mongo-green uppercase mb-1 font-bold">MongoDB Atlas estimado</div>
+                    <div class="space-y-0.5 text-white/80 leading-snug">
+                      <div><strong class="text-white">Flex:</strong> USD 8–30/mes</div>
+                      <div><strong class="text-white">Dedicated:</strong> desde ~USD 60/mes</div>
+                      <div class="text-white/45">Managed: backups, monitoreo, auto-scaling y menor overhead operativo.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-1 text-[9px] text-white/40 leading-tight">
+                  * Estimaciones orientativas. En Atlas el costo real depende de región, cloud provider, storage, tráfico y nivel de cluster.
+                </div>
+              `}
             </div>
           `)}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-2">
           <h3 class="text-sm sm:text-base font-bold mb-2">No estás solo. <span class="gradient-text">Estos también nos eligieron.</span></h3>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             ${empresas.map((emp,i) => html`
-              <div key=${emp.nombre} class="p-1.5 bg-white/5 border border-white/10 rounded-md hover:border-mongo-green/40 hover:bg-mongo-green/5 transition-all text-center fade-up" style=${{animationDelay:`${i*0.03}s`}}>
-                <div class="font-bold text-xs">${emp.nombre}</div>
-                <div class="text-[9px] text-white/50 leading-tight">${emp.uso}</div>
+              <div key=${emp.nombre} class="p-1 bg-white/5 border border-white/10 rounded-md hover:border-mongo-green/40 hover:bg-mongo-green/5 transition-all text-center fade-up" style=${{animationDelay:`${i*0.03}s`}}>
+                <div class="font-bold text-[11px] sm:text-xs">${emp.nombre}</div>
+                <div class="text-[8px] sm:text-[9px] text-white/50 leading-tight">${emp.uso}</div>
               </div>
             `)}
           </div>
         </div>
 
-        <div class="mb-3">
-          <h3 class="text-sm sm:text-base font-bold mb-2">Fundamento técnico: <span class="gradient-text">CAP & ACID</span></h3>
+        <div class="mb-2">
+          <h3 class="text-sm sm:text-base font-bold mb-2">Fundamentos: <span class="gradient-text">CAP & ACID</span> en MongoDB</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div class="p-3 bg-white/5 border border-mongo-green/30 rounded-lg hover:border-mongo-green/50 transition-all">
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <div>
-                  <div class="text-mongo-green text-[9px] uppercase tracking-wider font-semibold mb-0.5">Teorema CAP</div>
-                  <div class="text-sm font-extrabold">MongoDB prioriza <span class="gradient-text">CP</span></div>
-                </div>
-                <div class="flex gap-1 flex-shrink-0">
-                  <span class="px-1.5 py-0.5 bg-mongo-green/20 text-mongo-green rounded text-[10px] font-bold">C</span>
-                  <span class="px-1.5 py-0.5 bg-red-500/20 text-red-400 rounded text-[10px] font-bold">A</span>
-                  <span class="px-1.5 py-0.5 bg-mongo-green/20 text-mongo-green rounded text-[10px] font-bold">P</span>
-                </div>
-              </div>
+            <div class="p-2.5 bg-white/5 border border-mongo-green/30 rounded-lg">
+              <div class="text-mongo-green text-[9px] uppercase tracking-wider font-semibold mb-0.5">Teorema CAP</div>
+              <div class="text-sm font-extrabold mb-1">MongoDB es <span class="gradient-text">CP</span></div>
               <p class="text-[11px] text-white/80 leading-snug">
-                Mantiene <strong>consistencia</strong> y <strong>tolerancia a particiones</strong>. Si cae el primary, puede frenar writes hasta elegir otro nodo: pierde disponibilidad momentánea, pero evita datos contradictorios.
+                Prioriza <strong>Consistencia</strong> y <strong>tolerancia a particiones</strong>. Ante fallas de red o caída del primary, deja de aceptar writes hasta elegir uno nuevo — sacrifica disponibilidad momentánea para evitar inconsistencias.
               </p>
             </div>
-            <div class="p-3 bg-white/5 border border-mongo-green/30 rounded-lg hover:border-mongo-green/50 transition-all">
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <div>
-                  <div class="text-mongo-green text-[9px] uppercase tracking-wider font-semibold mb-0.5">Propiedades ACID</div>
-                  <div class="text-sm font-extrabold">ACID <span class="gradient-text">sobre documentos</span></div>
-                </div>
-                <div class="grid grid-cols-4 gap-1 flex-shrink-0">
-                  ${['A','C','I','D'].map(x => html`<span key=${x} class="px-1.5 py-0.5 bg-mongo-green/20 text-mongo-green rounded text-[10px] font-bold text-center">${x}</span>`)}
-                </div>
-              </div>
+            <div class="p-2.5 bg-white/5 border border-mongo-green/30 rounded-lg">
+              <div class="text-mongo-green text-[9px] uppercase tracking-wider font-semibold mb-0.5">Propiedades ACID</div>
+              <div class="text-sm font-extrabold mb-1">Atomicidad <span class="gradient-text">total</span></div>
               <p class="text-[11px] text-white/80 leading-snug">
-                Garantiza <strong>atomicidad por documento</strong> y permite <strong>transacciones multi-documento</strong>. La durabilidad se apoya en journaling y replicación; el aislamiento se maneja dentro de transacciones.
+                <strong>Atomicidad</strong> a nivel de documento + <strong>transacciones ACID multi-documento</strong>. Consistencia, aislamiento y durabilidad vía replicación, journaling y transacciones distribuidas.
               </p>
             </div>
           </div>
@@ -615,13 +639,19 @@ const slides = [
 
 function App() {
   const [current, setCurrent] = useState(0);
-  const [arrowsVisible, setArrowsVisible] = useState(true);
-  const scrollTimerRef = useRef(null);
+  const [swipeHint, setSwipeHint] = useState('right');
+  const hintTimerRef = useRef(null);
 
   const goTo = useCallback((idx) => {
     if (idx < 0 || idx >= slides.length) return;
     setCurrent(idx);
-    setArrowsVisible(true);
+    if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
+    if (idx === 0) {
+      setSwipeHint('right');
+    } else {
+      setSwipeHint('left');
+      hintTimerRef.current = setTimeout(() => setSwipeHint(null), 3200);
+    }
   }, []);
 
   useEffect(() => {
@@ -658,11 +688,11 @@ function App() {
     };
   }, [current, goTo]);
 
-  const handleSlideScroll = useCallback(() => {
-    setArrowsVisible(false);
-    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-    scrollTimerRef.current = setTimeout(() => setArrowsVisible(true), 1200);
+  useEffect(() => {
+    if (current === 0) setSwipeHint('right');
   }, []);
+
+  const handleSlideScroll = useCallback(() => {}, []);
 
   const Current = slides[current].component;
   const isFirst = current === 0;
@@ -671,26 +701,23 @@ function App() {
   return html`
     <div class="h-screen w-screen bg-mongo-dark text-white flex flex-col overflow-hidden">
       <div class="flex-1 relative overflow-hidden">
-        <div key=${current} onScroll=${handleSlideScroll} class="absolute inset-0 overflow-y-auto scrollbar-hide fade-in pb-2">
+        <div key=${current} onScroll=${handleSlideScroll} class="absolute inset-0 overflow-hidden scrollbar-hide fade-in">
           <${Current} goTo=${goTo} />
         </div>
 
-        <!-- Flechas mobile flotantes -->
-        <button
-          onClick=${() => goTo(current - 1)}
-          aria-label="Anterior"
-          class=${`md:hidden fixed left-3 bottom-16 z-30 w-11 h-11 rounded-full bg-mongo-green text-mongo-dark font-extrabold text-2xl flex items-center justify-center shadow-xl backdrop-blur transition-all duration-300 ${arrowsVisible && !isFirst ? 'opacity-90 scale-100' : 'opacity-0 scale-75 pointer-events-none'}`}
-        >‹</button>
-        <button
-          onClick=${() => goTo(current + 1)}
-          aria-label="Siguiente"
-          class=${`md:hidden fixed right-3 bottom-16 z-30 w-11 h-11 rounded-full bg-mongo-green text-mongo-dark font-extrabold text-2xl flex items-center justify-center shadow-xl backdrop-blur transition-all duration-300 ${arrowsVisible && !isLast ? 'opacity-90 scale-100' : 'opacity-0 scale-75 pointer-events-none'}`}
-        >›</button>
+        <!-- Hint mobile de swipe: orienta, no reemplaza el gesto -->
+        ${swipeHint && html`
+          <div class=${`md:hidden fixed ${swipeHint === 'right' ? 'right-5' : 'left-5'} bottom-20 z-30 pointer-events-none transition-opacity duration-500`}>
+            <div class=${`text-mongo-green font-black text-6xl leading-none drop-shadow-[0_0_12px_rgba(0,237,100,0.65)] ${swipeHint === 'right' ? 'swipe-right-hint' : 'swipe-left-hint'}`}>
+              ${swipeHint === 'right' ? '⟵' : '⟶'}
+            </div>
+          </div>
+        `}
       </div>
 
-      <div class="border-t border-white/10 bg-mongo-dark/95 backdrop-blur px-3 sm:px-6 py-2 flex items-center justify-between gap-2 sm:gap-4 flex-shrink-0">
+      <div class="border-t border-white/10 bg-mongo-dark/95 backdrop-blur px-3 sm:px-6 py-1.5 flex items-center justify-between gap-2 sm:gap-4 flex-shrink-0">
         <div class="flex items-center gap-2 flex-shrink-0">
-          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-mongo-green flex items-center justify-center">
+          <div class="w-7 h-7 rounded-lg bg-mongo-green flex items-center justify-center">
             <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5" fill="#001E2B">
               <path d="M12 2C13 5 17 8 17 13c0 4-3 7-5 7s-5-3-5-7c0-5 4-8 5-11z"></path>
             </svg>
@@ -699,7 +726,7 @@ function App() {
         </div>
         <div class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-hide">
           ${slides.map((s,i) => html`
-            <button key=${s.id} onClick=${()=>goTo(i)} class=${`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-[11px] sm:text-xs font-medium transition-all flex-shrink-0 ${i===current ? 'bg-mongo-green text-mongo-dark' : 'text-white/50 hover:text-white hover:bg-white/5'}`}>
+            <button key=${s.id} onClick=${()=>goTo(i)} class=${`px-2 sm:px-3 py-1 rounded-md text-[11px] sm:text-xs font-medium transition-all flex-shrink-0 ${i===current ? 'bg-mongo-green text-mongo-dark' : 'text-white/50 hover:text-white hover:bg-white/5'}`}>
               <span class="sm:hidden">${s.labelMobile}</span>
               <span class="hidden sm:inline">${s.labelDesktop}</span>
             </button>
