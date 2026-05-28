@@ -41,10 +41,10 @@
   .fade-in { animation: fade-in 0.4s ease-out; }
   @keyframes drop { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(120px); } }
 
-  .slide-fit { min-height: calc(100vh - 52px); height: calc(100vh - 52px); overflow: hidden; }
+  .slide-fit { min-height: calc(100vh - 52px); height: calc(100vh - 52px); overflow-y: auto; overflow-x: hidden; }
   .compact-slide h2 { line-height: 0.98; }
   @media (max-width: 767px) {
-    .slide-fit { min-height: calc(100vh - 50px); height: calc(100vh - 50px); }
+    .slide-fit { min-height: calc(100vh - 50px); height: calc(100vh - 50px); padding-bottom: 64px; }
   }
   @keyframes swipeRightHint {
     0%, 100% { transform: translateX(0); opacity: .35; }
@@ -646,11 +646,11 @@ function App() {
     if (idx < 0 || idx >= slides.length) return;
     setCurrent(idx);
     if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
+
     if (idx === 0) {
       setSwipeHint('right');
     } else {
-      setSwipeHint('left');
-      hintTimerRef.current = setTimeout(() => setSwipeHint(null), 3200);
+      setSwipeHint(null);
     }
   }, []);
 
@@ -701,7 +701,7 @@ function App() {
   return html`
     <div class="h-screen w-screen bg-mongo-dark text-white flex flex-col overflow-hidden">
       <div class="flex-1 relative overflow-hidden">
-        <div key=${current} onScroll=${handleSlideScroll} class="absolute inset-0 overflow-hidden scrollbar-hide fade-in">
+        <div key=${current} onScroll=${handleSlideScroll} class="absolute inset-0 overflow-y-auto overflow-x-hidden scrollbar-hide fade-in">
           <${Current} goTo=${goTo} />
         </div>
 
