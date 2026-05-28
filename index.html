@@ -41,10 +41,10 @@
   .fade-in { animation: fade-in 0.4s ease-out; }
   @keyframes drop { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(120px); } }
 
-  .slide-fit { min-height: calc(100vh - 52px); height: calc(100vh - 52px); overflow-y: auto; overflow-x: hidden; }
+  .slide-fit { min-height: calc(100dvh - 52px); height: calc(100dvh - 52px); overflow-y: auto; overflow-x: hidden; }
   .compact-slide h2 { line-height: 0.98; }
   @media (max-width: 767px) {
-    .slide-fit { min-height: calc(100vh - 50px); height: calc(100vh - 50px); padding-bottom: 64px; }
+    .slide-fit { min-height: calc(100dvh - 58px); height: calc(100dvh - 58px); padding-bottom: max(72px, env(safe-area-inset-bottom)); }
   }
   @keyframes swipeRightHint {
     0%, 100% { transform: translateX(0); opacity: .35; }
@@ -699,7 +699,7 @@ function App() {
   const isLast = current === slides.length - 1;
 
   return html`
-    <div class="h-screen w-screen bg-mongo-dark text-white flex flex-col overflow-hidden">
+    <div class="h-[100dvh] w-screen bg-mongo-dark text-white flex flex-col overflow-hidden">
       <div class="flex-1 relative overflow-hidden">
         <div key=${current} onScroll=${handleSlideScroll} class="absolute inset-0 overflow-y-auto overflow-x-hidden scrollbar-hide fade-in">
           <${Current} goTo=${goTo} />
@@ -715,7 +715,7 @@ function App() {
         `}
       </div>
 
-      <div class="border-t border-white/10 bg-mongo-dark/95 backdrop-blur px-3 sm:px-6 py-1.5 flex items-center justify-between gap-2 sm:gap-4 flex-shrink-0">
+      <div class="border-t border-white/10 bg-mongo-dark/95 backdrop-blur px-3 sm:px-6 py-1.5 flex items-center justify-between gap-2 sm:gap-4 flex-shrink-0 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
         <div class="flex items-center gap-2 flex-shrink-0">
           <div class="w-7 h-7 rounded-lg bg-mongo-green flex items-center justify-center">
             <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5" fill="#001E2B">
